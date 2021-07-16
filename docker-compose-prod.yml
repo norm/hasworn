@@ -1,0 +1,10 @@
+version: '3.0'
+
+# Prod config uses journald for logging and the web image corresponding to the current commit
+
+services:
+  app:
+    image: ghcr.io/norm/hasworn:$DOCKER_IMAGE
+    command: gunicorn hasworn.wsgi:application --bind 0.0.0.0:8000
+    logging:
+      driver: journald

@@ -1,1 +1,11 @@
+# homedir files
+.bash_history
+.bash_logout
+.bashrc
+.profile
+.ssh
+.viminfo
+.cache/
+
+# project files
 __pycache__/
