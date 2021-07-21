@@ -1,0 +1,8 @@
+DEBUG=1
+SECRET_KEY=django-insecure-2c1-f@&vqyh*(eiz4+pyfiuxihuiesg39uz-y=vczx95yrqx%1
+SQL_ENGINE=django.db.backends.postgresql
+SQL_DATABASE=hasworn
+SQL_USER=hasworn
+SQL_PASSWORD=hasworn
+SQL_HOST=db
+SQL_PORT=5432

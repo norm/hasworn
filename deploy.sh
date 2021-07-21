@@ -1,11 +1,13 @@
 #!/usr/bin/env -S bash -euo pipefail
+#
+# Redeploy the hasworn django app.
 
 IP_ADDRESS='{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 
 
 function main {
     reset_checkout_to_main
-
+    migrate_database
     start_new_image
     remove_old_image
 }
@@ -17,6 +19,14 @@ function reset_checkout_to_main {
     export DOCKER_IMAGE=sha-$(git show-ref --hash=7 main | head -1)
 
     docker pull ghcr.io/norm/hasworn:$DOCKER_IMAGE
+}
+
+function migrate_database {
+    docker-compose \
+        -f docker-compose.yml \
+        -f docker-compose-prod.yml \
+            run --rm -T app \
+                python manage.py migrate --noinput
 }
 
 function start_new_image {
@@ -33,7 +43,8 @@ function start_new_image {
         --fail \
         --header "Host: app" \
         http://$new_addr:8000/ \
-            || exit 1
+            > /dev/null \
+                || exit 1
 
     reload_nginx
 }
@@ -51,7 +62,6 @@ function remove_old_image {
 function scale_app {
     local count="${1:-1}"
 
-    echo "-- $DOCKER_IMAGE"
     docker-compose \
         -f docker-compose.yml \
         -f docker-compose-prod.yml \
@@ -61,9 +71,6 @@ function scale_app {
             --no-recreate \
             app
 }
-
-# docker-compose up -d --no-deps --scale $service_name=2 --no-recreate $service_name
-
 
 function reload_nginx {
     docker-compose exec -T nginx /usr/sbin/nginx -s reload
