@@ -4,7 +4,7 @@ version: '3.0'
 
 services:
   app:
-    image: ghcr.io/norm/hasworn:$DOCKER_IMAGE
+    image: ghcr.io/norm/hasworn:sha-$COMMIT_SHA
     command: gunicorn hasworn.wsgi:application --bind 0.0.0.0:8000
     logging:
       driver: journald
