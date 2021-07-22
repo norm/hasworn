@@ -1,0 +1,11 @@
+version: '3.0'
+
+services:
+  app:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-2c1-f@&vqyh*(eiz4+pyfiuxihuiesg39uz-y=vczx95yrqx%1
