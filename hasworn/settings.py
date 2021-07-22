@@ -10,8 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import logging.config
 import os
 from pathlib import Path
+
+from django.utils.log import DEFAULT_LOGGING
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -85,6 +89,33 @@ DATABASES = {
         "PORT": os.environ.get("SQL_PORT"),
     }
 }
+
+
+# Logging to STDOUT and STDERR under Docker
+LOGGING_CONFIG = None
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(process)d %(thread)d %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': LOGLEVEL,
+            'handlers': [ 'console', ],
+        },
+    },
+})
 
 
 # Password validation
