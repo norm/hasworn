@@ -1,11 +1,4 @@
 #!/usr/bin/env -S bash -euo pipefail
 
-export COMMIT_SHA=$(git show-ref --head --hash=7 | head -1)
-
-docker-compose \
-    -f docker-compose.yml \
-    -f docker-compose-${HASWORN_ENV:-prod}.yml \
-        up -d
-
-docker-compose \
-    logs -tf --tail=2
+./compose up -d
+./compose logs -tf --tail=20
