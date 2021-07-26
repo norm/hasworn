@@ -1,0 +1,6 @@
+server {
+    listen          8080;
+
+    server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
+    root            /baked/$1;
+}

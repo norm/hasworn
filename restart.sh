@@ -40,7 +40,7 @@ function start_new_image {
         --retry-delay 1 \
         --retry-connrefused \
         --fail \
-        --header "Host: app" \
+        --header "Host: i.hasworn.com" \
         http://$new_addr:8000/ \
             > /dev/null \
                 || exit 1
