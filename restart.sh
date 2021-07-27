@@ -8,6 +8,7 @@ IP_ADDRESS='{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 function main {
     fetch_docker_image
     migrate_database
+    collect_static_files
     start_new_image
     remove_old_image
 }
@@ -26,6 +27,11 @@ function fetch_docker_image {
 function migrate_database {
     run_compose run --rm -T app \
         python manage.py migrate --noinput
+}
+
+function collect_static_files {
+    run_compose run --rm -T app \
+        python manage.py collectstatic --noinput
 }
 
 function start_new_image {

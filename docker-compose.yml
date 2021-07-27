@@ -8,6 +8,8 @@ services:
       - environ
     depends_on:
       - db
+    volumes:
+      - static:/static
 
   nginx:
     image: nginx:1.21.1
@@ -15,7 +17,7 @@ services:
       - app
     volumes:
       - baked:/baked
-      - ./nginx:/etc/nginx/templates
+      - static:/static
 
   db:
     image: postgres:13.3-alpine
@@ -29,3 +31,4 @@ services:
 volumes:
   postgres_data:
   baked:
+  static:
