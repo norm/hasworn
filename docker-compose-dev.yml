@@ -13,5 +13,5 @@ services:
   nginx:
     ports:
       - 8000:8080
-    environment:
-      - SERVER_NAME=i.hasworn.test
+    volumes:
+      - ./nginx/dev:/etc/nginx/templates

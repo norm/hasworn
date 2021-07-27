@@ -1,0 +1,16 @@
+server {
+    listen          8080;
+    server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
+
+    return 301 https://$1.hasworn.com$request_uri;
+}
+
+server {
+    listen          8081 ssl;
+
+    ssl_certificate     /etc/letsencrypt/certificates/hasworn.com.crt;
+    ssl_certificate_key /etc/letsencrypt/certificates/hasworn.com.key;
+
+    server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
+    root            /baked/$1;
+}

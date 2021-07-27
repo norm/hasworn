@@ -1,6 +1,16 @@
 server {
     listen       8080;
-    server_name  ${SERVER_NAME};
+    server_name  i.hasworn.com;
+
+    return 301 https://i.hasworn.com$request_uri;
+}
+
+server {
+    listen       8081 ssl;
+    server_name  i.hasworn.com;
+
+    ssl_certificate     /etc/letsencrypt/certificates/hasworn.com.crt;
+    ssl_certificate_key /etc/letsencrypt/certificates/hasworn.com.key;
 
     resolver 127.0.0.11 valid=5s;
     set $upstream app;

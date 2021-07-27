@@ -29,3 +29,9 @@ environment variable `HASWORN_ENV=dev` first.
 
         ./manage makemigrations
         ./manage migrate
+
+  * **cert**
+
+    Register Let's Encrypt certificates.
+
+        ./cert

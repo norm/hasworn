@@ -1,0 +1,24 @@
+#!/usr/bin/env -S bash -euo pipefail
+
+extra_args='--renew-hook=./reload_nginx.sh'
+action='renew'
+
+if [ ! -f letsencrypt/certificates/hasworn.com.key ]; then
+    extra_args=
+    action='run'
+fi
+
+docker run \
+    -it \
+    --rm \
+    --env-file environ.production \
+    -u $(id -u):$(id -g) \
+    -v '/home/hasworn/letsencrypt:/etc/lego_certificates' \
+    goacme/lego \
+        --email norm@hasworn.mnfrancis.com \
+        --accept-tos \
+        --dns route53 \
+        --path /etc/lego_certificates \
+            --domains hasworn.com \
+            --domains \*.hasworn.com \
+                    $action $extra_args
