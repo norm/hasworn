@@ -1,3 +1,10 @@
 #!/usr/bin/env -S bash -euo pipefail
 
-./compose run app python manage.py "$@"
+declare -a env_vars
+
+[ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ] \
+    && env_vars+=(-e DJANGO_SUPERUSER_PASSWORD=$DJANGO_SUPERUSER_PASSWORD)
+
+./compose run \
+    "${env_vars[@]}" \
+    app python manage.py "$@"

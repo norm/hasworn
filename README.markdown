@@ -5,6 +5,36 @@ A place to collection my tshirt wearing history.
 
 
 
+## Generated static sites
+
+Running in development:
+
+    # bring up the stack
+    export HASWORN_ENV=dev
+    ./start
+
+    # if this is a new checkout, or volumes have been removed
+    ./manage collectstatic --noinput
+    ./manage migrate
+    DJANGO_SUPERUSER_PASSWORD=norm ./manage createsuperuser \
+        --username norm --email norm@example.com --noinput
+
+To test a generated hasworn site:
+
+    ./manage import_csv sample/norm.csv
+    ./manage generate_site norm
+    ( cd baked/norm && python -m http.server 8080 )
+
+
+When done developing:
+
+    # shut down temporarily
+    ./compose down
+
+    # shut down and remove volumes to start afresh (or when development stops)
+    ./compose down --volumes --remove-orphans
+
+
 ## Scripts
 
 Scripts to interact with docker-compose, using the right configuration and
