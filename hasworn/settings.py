@@ -80,6 +80,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hasworn.wsgi.application'
 
 
+# Generated hasworn sites
+GENERATED_SITES_DIR='/baked'
+
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {

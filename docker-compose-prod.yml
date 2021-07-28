@@ -11,6 +11,8 @@ services:
       - environ.production
     logging:
       driver: journald
+    volumes:
+      - baked:/baked
 
   nginx:
     restart: unless-stopped

@@ -51,3 +51,12 @@ class Wearer(AbstractUser):
             return self.username
         else:
             return self.name
+
+    @property
+    def wearings(self):
+        from hasworn.clothing.models import Wearing
+        return Wearing.objects.filter(worn__wearer=self)
+
+    def generate_wearer_site(self):
+        from .pages import WearerPage
+        WearerPage(wearer=self).create()

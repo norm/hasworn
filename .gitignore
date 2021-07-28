@@ -11,3 +11,6 @@
 __pycache__/
 environ.production
 letsencrypt/
+
+# generated files
+baked/
