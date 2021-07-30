@@ -1,3 +1,4 @@
+from datetime import date
 from django.contrib.auth.models import AbstractUser
 from django.core import validators
 from django.db import models
@@ -51,6 +52,14 @@ class Wearer(AbstractUser):
             return self.username
         else:
             return self.name
+
+    @property
+    def wearing_today(self):
+        return self.wearings.filter(day=date.today())
+
+    @property
+    def worn_previously(self):
+        return self.wearings.filter(day__lt=date.today())
 
     @property
     def wearings(self):

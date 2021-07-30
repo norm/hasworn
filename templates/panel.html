@@ -1,0 +1,57 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+
+<p>Logged in as: <em>{{request.user}}</em></p>
+<form method='post' action='{% url "logout" %}'>
+  {% csrf_token %}
+  <input type='submit' value='Logout'>
+</form>
+
+<h2>Today ({% now 'Y-m-d' %})</h2>
+{% if request.user.wearing_today %}
+  {% for wearing in request.user.wearing_today %}
+    <p>{{wearing.clothing}}</p>
+  {% endfor %}
+{% else %}
+  <form method='post' action='{% url "create-wearing" %}'>
+    {% csrf_token %}
+    <input type='hidden' name='day' value='{% now "Y-m-d" %}'>
+    <fieldset>
+      <legend>Wearing today</legend>
+      <label for='tshirt'>Tshirt</label>
+      <select id='tshirt' name='worn'>
+        {% for worn in request.user.worn_set.all %}
+        <option value='{{worn.pk}}'>{{worn.clothing}}</option>
+        {% endfor %}
+      </select>
+      <input type='submit' value='Submit'>
+    </fieldset>
+  </form>
+{% endif %}
+
+<h2>Previously</h2>
+<ul>
+  {% for wearing in request.user.worn_previously.all|slice:":5" %}
+  <li>{{wearing}}</li>
+  {% endfor %}
+</ul>
+
+<form method='post' action='{% url "create-wearing" %}'>
+  {% csrf_token %}
+  <fieldset>
+    <legend>Previously worn</legend>
+    <label for='date'>Date</label>
+    <input type='date' name='day'>
+    <label for='tshirt'>Tshirt</label>
+    <select id='tshirt' name='worn'>
+      {% for worn in request.user.worn_set.all %}
+      <option value='{{worn.pk}}'>{{worn.clothing}}</option>
+      {% endfor %}
+    </select>
+    <input type='submit' value='Submit'>
+  </fieldset>
+</form>
+
+
+{% endblock %}

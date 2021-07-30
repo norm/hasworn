@@ -1,0 +1,40 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+
+<h1>{{form.worn.value}}</h1>
+
+{% if form.non_field_errors %}
+<ul>
+{% for error in form.non_field_errors %}
+  <li>{{error}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<form method="post">{% csrf_token %}
+  <label for='date'>
+    Date
+    {% for error in form.errors.day %}
+      <strong>({{error}})</strong>
+    {% endfor %}
+  </label>
+  <input type='date' name='day' value='{{form.day.value}}'>
+
+  <label for='tshirt'>
+    Tshirt
+    {% for error in form.errors.worn %}
+    <strong>({{error}})</strong>
+    {% endfor %}
+  </label>
+  <select id='tshirt' name='worn'>
+    <option value=''>...</option>
+    {% for worn in request.user.worn_set.all %}
+    <option value='{{worn.pk}}' 
+        {% if worn.pk|stringformat:"s" == form.worn.value %}selected{% endif %}
+      >{{worn.clothing}}</option>
+    {% endfor %}
+  </select>
+  <input type='submit' value='Submit'>
+</form>
+{% endblock %}

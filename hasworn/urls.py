@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from hasworn.views import Home, Login, Logout
+from hasworn.clothing.views import CreateWearing
 
 
 urlpatterns = [
@@ -29,5 +30,10 @@ urlpatterns = [
         '',
         Home.as_view(),
         name = 'homepage'
+    ),
+    path(
+        'wearing/',
+        CreateWearing.as_view(),
+        name = 'create-wearing',
     ),
 ]

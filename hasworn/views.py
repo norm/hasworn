@@ -7,7 +7,11 @@ from django.views.generic import TemplateView
 
 
 class Home(TemplateView):
-    template_name = 'home.html'
+    def get_template_names(self):
+        if self.request.user.is_authenticated:
+            return ['panel.html']
+        else:
+            return ['login.html']
 
 
 class Login(views.LoginView):

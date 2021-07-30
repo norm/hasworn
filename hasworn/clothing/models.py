@@ -98,6 +98,10 @@ class Wearing(models.Model):
         default = timezone.now,
     )
 
+    @property
+    def clothing(self):
+        return self.worn.clothing
+
     def __str__(self):
         return u'%s worn by %s on %s' % (
             self.worn.clothing,
