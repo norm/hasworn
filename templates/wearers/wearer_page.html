@@ -1,10 +1,17 @@
+{% extends "wearers/base.html" %}
+
+{% block content %}
 <h1>{{wearer}}</h1>
 <h2>recent</h2>
-{% for w in wearer.wearings.all|slice:':2' %}
-<li>{{w}}</li>
+{% for wearing in wearer.wearings.all|slice:':10' %}
+<li>
+  <a href='{{wearing.clothing.static_site_url}}'>{{wearing.clothing}}</a>
+  on {{wearing.day}}
+</li>
 {% endfor %}
 
 <h2>has worn</h2>
-{% for w in wearer.has_worn.all %}
-<li>{{w}}</li>
+{% for clothing in wearer.has_worn.all %}
+<li><a href='{{clothing.static_site_url}}'>{{clothing}}</a></li>
 {% endfor %}
+{% endblock %}

@@ -4,6 +4,8 @@ from django.core import validators
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from .pages import WearerPage, WearerWornPage
+
 
 class Wearer(AbstractUser):
     username = models.CharField(
@@ -67,5 +69,6 @@ class Wearer(AbstractUser):
         return Wearing.objects.filter(worn__wearer=self)
 
     def generate_wearer_site(self):
-        from .pages import WearerPage
         WearerPage(wearer=self).create()
+        for worn in self.has_worn.all():
+            WearerWornPage(wearer=self, pk=worn.pk).create()

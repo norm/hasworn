@@ -54,6 +54,14 @@ class Clothing(models.Model):
     def __str__(self):
         return u'%s (%s)' % (self.name, self.type)
 
+    @property
+    def static_site_url(self):
+        return '/%s/%s' % (self.type_plural, self.slug)
+
+    @property
+    def type_plural(self):
+        return '%ss' % self.type
+
     def save(self, *args, **kwargs):
         if not self.id and not self.slug:
             self.slug = slugify(self.name)[:127]

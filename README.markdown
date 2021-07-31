@@ -23,8 +23,11 @@ To test a generated hasworn site:
 
     ./manage import_csv sample/norm.csv
     ./manage generate_site norm
-    ( cd baked/norm && python -m http.server 8080 )
 
+To preview the generated site:
+
+    # needs flask, one time run: pip install flask
+    python static.py
 
 When done developing:
 

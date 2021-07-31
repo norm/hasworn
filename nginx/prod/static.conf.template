@@ -13,4 +13,8 @@ server {
 
     server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
     root            /baked/$1;
+
+    location / {
+        try_files $uri/index.html $uri.html =404;
+    }
 }

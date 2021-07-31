@@ -5,13 +5,18 @@ from django.core.exceptions import ImproperlyConfigured
 from django.template.loader import render_to_string
 
 
-class StaticPage(object):
+class StaticPage:
+    wearer = None
     template = None
     object = None
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
+        self.object = self.get_object()
+
+    def get_object(self):
+        return None
 
     def get_template(self):
         if self.template is None:
@@ -47,3 +52,34 @@ class StaticPage(object):
 
     def create(self):
         self.create_page()
+
+
+class ModelPage(StaticPage):
+    model = None
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        pk = getattr(self, 'pk', None)
+        if pk:
+            queryset = queryset.filter(pk=pk)
+        else:
+            slug = getattr(self, 'slug', None)
+            if slug:
+                queryset = queryset.filter(slug=slug)
+            else:
+                raise NoWayJose
+        try:
+            obj = queryset.get()
+        except:
+            raise NopeNothing
+        return obj
+
+    def get_model(self):
+        return self.model
+
+    def get_queryset(self):
+        model = self.get_model()
+        if model:
+            return model._default_manager.all()
+        else:
+            raise NuhUh
