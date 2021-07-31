@@ -4,7 +4,7 @@ from django.core import validators
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .pages import WearerPage, WearerWornPage
+from .pages import WearerPage, WearerWornPage, WearerYear
 
 
 class Wearer(AbstractUser):
@@ -68,7 +68,12 @@ class Wearer(AbstractUser):
         from hasworn.clothing.models import Wearing
         return Wearing.objects.filter(worn__wearer=self)
 
+    def years_active(self):
+        return [ year.year for year in self.wearings.dates('day', 'year') ]
+
     def generate_wearer_site(self):
         WearerPage(wearer=self).create()
         for worn in self.has_worn.all():
             WearerWornPage(wearer=self, pk=worn.pk).create()
+        for year in self.years_active():
+            WearerYear(wearer=self, year=year).create()
