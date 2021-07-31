@@ -1,8 +1,7 @@
 {% extends "wearers/base.html" %}
 
 {% block content %}
-<h1>{{wearer}}</h1>
-<h2>recent</h2>
+<h2>most recently worn</h2>
 {% for wearing in wearer.wearings.all|slice:':10' %}
 <li>
   <a href='{{wearing.clothing.static_site_url}}'>{{wearing.clothing}}</a>
@@ -10,8 +9,13 @@
 </li>
 {% endfor %}
 
-<h2>has worn</h2>
-{% for clothing in wearer.has_worn.all %}
-<li><a href='{{clothing.static_site_url}}'>{{clothing}}</a></li>
+<h2>most worn in the last six months</h2>
+{% for worn in wearer.most_worn_recently|slice:':12' %}
+  <li><a href='{{worn.clothing.static_site_url}}'>{{worn.clothing}}</a> worn {{worn.num_worn}} times</li>
+{% endfor %}
+
+<h2>most worn of all all time</h2>
+{% for worn in wearer.most_worn|slice:':12' %}
+  <li><a href='{{worn.clothing.static_site_url}}'>{{worn.clothing}}</a> worn {{worn.num_worn}} times</li>
 {% endfor %}
 {% endblock %}

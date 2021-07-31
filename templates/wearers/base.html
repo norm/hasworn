@@ -3,6 +3,23 @@
 
 </head>
 <body>
+{% block header %}
+  <h1>{{wearer}}</h1>
+
+  <p>
+    <a href='/'>{{wearer.get_name}}</a> has worn
+    <a href='/tshirts/'>{{wearer.has_worn.count}} different tshirts</a>
+    {{wearer.wearings.count}} times, in 
+    {% for year in wearer.years_active %}
+      {% if forloop.last %}
+        {% if not forloop.first %} and {% endif %}
+        <a href='/{{year}}/'>{{year}}</a>.
+      {% else %}
+        <a href='/{{year}}/'>{{year}}</a>,
+      {% endif %}
+    {% endfor %}
+  </p>
+{% endblock %}
 {% block content %}
 {% endblock %}
 </body>

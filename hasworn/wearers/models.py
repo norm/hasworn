@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from django.contrib.auth.models import AbstractUser
 from django.core import validators
 from django.db import models
@@ -72,6 +72,18 @@ class Wearer(AbstractUser):
         # FIXME also order by date first worn
         return self.worn_set.annotate(
                 num_worn = models.Count('days_worn')
+            ).order_by('-num_worn')
+
+    def most_worn_recently(self, cut_off=None):
+        if not cut_off:
+            cut_off = date.today() - timedelta(days=180)
+        # FIXME also order by date first worn
+        return self.worn_set.filter(
+                days_worn__day__gte = cut_off
+            ).annotate(
+                num_worn=models.Count('days_worn')
+            ).filter(
+                num_worn__gt = 1
             ).order_by('-num_worn')
 
     def years_active(self):
