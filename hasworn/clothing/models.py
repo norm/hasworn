@@ -59,6 +59,10 @@ class Clothing(models.Model):
         return '/%s/%s' % (self.type_plural, self.slug)
 
     @property
+    def image_url(self):
+        return 'http://img.hasworn.com/%s.jpg' % self.slug
+
+    @property
     def type_plural(self):
         return '%ss' % self.type
 

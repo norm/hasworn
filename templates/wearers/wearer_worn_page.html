@@ -2,6 +2,7 @@
 
 {% block content %}
   <h1>{{object.clothing}}</h1>
+  <p><img src='{{object.clothing.image_url}}' width='600'></p>
 
   <ul>
     {% for wearing in object.days_worn.all %}
