@@ -33,3 +33,15 @@ class WearerYear(StaticPage):
                 day__lte=date(self.year, 12, 31)
             ).order_by('day')
         return context
+
+
+class WearerTypeIndex(StaticPage):
+    template = 'wearers/wearer_type_index.html'
+
+    def get_filename(self):
+        return "%s/%s/index.html" % (self.wearer.username, 'tshirts')
+
+    def get_context(self, **kwargs):
+        context = super().get_context(**kwargs)
+        context['wearings'] = self.wearer.most_worn()
+        return context

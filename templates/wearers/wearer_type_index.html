@@ -1,0 +1,9 @@
+{% extends "wearers/base.html" %}
+
+{% block content %}
+<ul>
+  {% for wearing in wearings %}
+    <li>{{wearing.day}} <a href='{{wearing.clothing.static_site_url}}'>{{wearing.clothing}}</a> worn {{wearing.num_worn}} times</li>
+  {% endfor %}
+</ul>
+{% endblock %}
