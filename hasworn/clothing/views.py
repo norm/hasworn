@@ -8,5 +8,5 @@ class CreateWearing(CreateView):
     fields = ('day', 'worn')
 
     def get_success_url(self):
-        self.request.user.generate_wearer_site()
+        self.request.user.generate_wearer_site_wearing(self.object)
         return '/'

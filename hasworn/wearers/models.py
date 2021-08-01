@@ -89,6 +89,12 @@ class Wearer(AbstractUser):
     def years_active(self):
         return [ year.year for year in self.wearings.dates('day', 'year') ]
 
+    def generate_wearer_site_wearing(self, wearing):
+        WearerWornPage(wearer=self, pk=wearing.worn.pk).create()
+        WearerTypeIndex(wearer=self).create()
+        WearerYear(wearer=self, year=wearing.day.year).create()
+        WearerPage(wearer=self).create()
+
     def generate_wearer_site(self):
         WearerPage(wearer=self).create()
         for worn in self.has_worn.all():
