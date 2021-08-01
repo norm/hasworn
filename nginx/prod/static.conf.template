@@ -1,3 +1,7 @@
+types {
+    text/csv csv;
+}
+
 server {
     listen          8080;
     server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
@@ -14,7 +18,8 @@ server {
     server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
     root            /baked/$1;
 
-    location / {
-        try_files $uri/index.html $uri.html =404;
+    location = /index.csv {}
+    location   / {
+        try_files $uri.html $uri/index.html =404;
     }
 }

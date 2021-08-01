@@ -1,5 +1,8 @@
+import csv
 from datetime import date
+from django.conf import settings
 from hasworn.pages import ModelPage, StaticPage
+import os
 
 
 class WearerPage(StaticPage):
@@ -45,3 +48,30 @@ class WearerTypeIndex(StaticPage):
         context = super().get_context(**kwargs)
         context['wearings'] = self.wearer.most_worn()
         return context
+
+
+class WearerCSV(StaticPage):
+    def get_filename(self):
+        return '%s/index.csv' % self.wearer.username
+
+    def create_page(self):
+        filename = self.get_filename()
+        full_filename = os.path.join(settings.GENERATED_SITES_DIR, filename)
+        with open(full_filename, 'w') as handle:
+            print('->', full_filename)
+            writer = csv.DictWriter(
+                handle,
+                fieldnames=['day','type','slug','name'],
+            )
+            writer.writeheader()
+
+            wearings = self.wearer.wearings.select_related(
+                    'worn__clothing'
+                ).order_by('day')
+            for wearing in wearings:
+                writer.writerow({
+                    'day': wearing.day,
+                    'type': wearing.clothing.type,
+                    'slug': wearing.clothing.slug,
+                    'name': wearing.clothing.name,
+                })
