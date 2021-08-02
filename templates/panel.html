@@ -33,7 +33,14 @@
 <h2>Previously</h2>
 <ul>
   {% for wearing in request.user.worn_previously.all|slice:":5" %}
-  <li>{{wearing}}</li>
+  <li>
+    {{wearing}}
+    <form method='post' action='{% url "delete-wearing" pk=wearing.pk %}'>
+      {% csrf_token %}
+      <input type='hidden' name='pk' value='{{wearing.pk}}'>
+      <input type='submit' value='Delete'>
+    </form>
+  </li>
   {% endfor %}
 </ul>
 
