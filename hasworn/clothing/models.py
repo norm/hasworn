@@ -5,6 +5,14 @@ from django.utils.translation import ugettext_lazy as _
 from hasworn.wearers.models import Wearer
 
 
+def image_location(instance, filename):
+    return '%s/%s.%s.jpg' % (
+            instance.type,
+            instance.slug,
+            instance.updated_at.strftime('%Y%m%d%H%M%S'),
+        )
+
+
 class Clothing(models.Model):
     """
     An item of clothing, of a specific type.
@@ -50,6 +58,11 @@ class Clothing(models.Model):
         through = 'Worn',
         related_name = 'has_worn',
     )
+    image = models.ImageField(
+        upload_to = image_location,
+        blank = True,
+        null = True,
+    )
 
     def __str__(self):
         return u'%s (%s)' % (self.name, self.type)
@@ -60,7 +73,10 @@ class Clothing(models.Model):
 
     @property
     def image_url(self):
-        return 'http://img.hasworn.com/%s.jpg' % self.slug
+        if self.image:
+            return self.image.url
+        else:
+            return 'http://img.hasworn.com/%s.jpg' % self.slug
 
     @property
     def type_plural(self):

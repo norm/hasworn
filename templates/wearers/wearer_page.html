@@ -1,9 +1,15 @@
 {% extends "wearers/base.html" %}
+{% load thumbnail %}
 
 {% block content %}
 <h2>most recently worn</h2>
 {% for wearing in wearer.wearings.all|slice:':10' %}
 <li>
+  {% if wearing.clothing.image %}
+    {% thumbnail wearing.clothing.image "100x100" crop="center" as thumb %}
+      <img src='{{thumb.url}}' alt=''>
+    {% endthumbnail %}
+  {% endif %}
   <a href='{{wearing.clothing.static_site_url}}'>{{wearing.clothing}}</a>
   on {{wearing.day}}
 </li>
@@ -11,11 +17,19 @@
 
 <h2>most worn in the last six months</h2>
 {% for worn in wearer.most_worn_recently|slice:':12' %}
-  <li><a href='{{worn.clothing.static_site_url}}'>{{worn.clothing}}</a> worn {{worn.num_worn}} times</li>
+  <li>
+    {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
+      <img src='{{thumb.url}}' alt=''>
+    {% endthumbnail %}
+    <a href='{{worn.clothing.static_site_url}}'>{{worn.clothing}}</a> worn {{worn.num_worn}} times</li>
 {% endfor %}
 
 <h2>most worn of all all time</h2>
 {% for worn in wearer.most_worn|slice:':12' %}
-  <li><a href='{{worn.clothing.static_site_url}}'>{{worn.clothing}}</a> worn {{worn.num_worn}} times</li>
+  <li>
+    {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
+      <img src='{{thumb.url}}' alt=''>
+    {% endthumbnail %}
+    <a href='{{worn.clothing.static_site_url}}'>{{worn.clothing}}</a> worn {{worn.num_worn}} times</li>
 {% endfor %}
 {% endblock %}

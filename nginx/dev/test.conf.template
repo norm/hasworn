@@ -4,8 +4,12 @@ server {
 
     resolver 127.0.0.11 valid=5s;
     set $upstream app;
+    client_max_body_size 3M;
 
     location /static/ {
+        root /static;
+    }
+    location /media/ {
         root /static;
     }
 

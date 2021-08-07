@@ -1,4 +1,5 @@
 {% extends "wearers/base.html" %}
+{% load thumbnail %}
 
 {% block content %}
 <h1>{{year}}</h1>
@@ -13,6 +14,9 @@
     <ol>
   {% endifchanged %}
     <li value='{{wearing.day|date:"d"}}'>
+      {% thumbnail wearing.clothing.image "100x100" crop="center" as thumb %}
+        <img src='{{thumb.url}}' alt=''>
+      {% endthumbnail %}
       {{wearing.day|date:"d"}}
       <a href='{{wearing.clothing.static_site_url}}'>{{wearing.clothing}}</a>
     </li>

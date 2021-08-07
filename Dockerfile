@@ -6,7 +6,13 @@ WORKDIR /app
 
 # psycopg support
 RUN    apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+    && apk add postgresql-dev \
+    && apk add gcc \
+    && apk add python3-dev \
+    && apk add jpeg-dev \
+    && apk add zlib-dev \
+    && apk add libjpeg \
+    && apk add musl-dev
 
 # python libs
 RUN pip install --upgrade pip

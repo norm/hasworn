@@ -1,8 +1,11 @@
 {% extends "wearers/base.html" %}
+{% load thumbnail %}
 
 {% block content %}
   <h1>{{object.clothing}}</h1>
-  <p><img src='{{object.clothing.image_url}}' width='600'></p>
+  {% thumbnail wearing.clothing.image "1024x1024" crop="center" as thumb %}
+    <p><img src='{{thumb.url}}' alt=''></p>
+  {% endthumbnail %}
 
   <ul>
     {% for wearing in object.days_worn.all %}
