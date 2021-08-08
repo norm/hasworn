@@ -2,7 +2,12 @@
 
 {% block content %}
 
-<p>Logged in as: <em>{{request.user}}</em></p>
+<p>
+  Logged in as: <em>{{request.user}}</em>
+  {% if request.user.is_superuser %}
+    <a href='{% url "admin:index" %}'>admin</a>
+  {% endif %}
+</p>
 <form method='post' action='{% url "logout" %}'>
   {% csrf_token %}
   <input type='submit' value='Logout'>

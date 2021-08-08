@@ -18,7 +18,10 @@ class Login(views.LoginView):
     template_name='login.html'
 
     def get_success_url(self):
-        return reverse('homepage')
+        if self.request.user.is_superuser:
+            return reverse('admin:index')
+        else:
+            return reverse('homepage')
 
 
 class Logout(views.LogoutView):
