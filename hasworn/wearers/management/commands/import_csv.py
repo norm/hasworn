@@ -20,6 +20,7 @@ class Command(BaseCommand):
                 clothing, _ = Clothing.objects.get_or_create(
                     name = row['name'],
                     slug = row['slug'],
+                    type = row['type'],
                     created_by = wearer,
                 )
                 worn, _ = Worn.objects.get_or_create(
@@ -28,5 +29,5 @@ class Command(BaseCommand):
                 )
                 wearing = Wearing.objects.get_or_create(
                     worn = worn,
-                    day = row['date'],
+                    day = row['day'],
                 )

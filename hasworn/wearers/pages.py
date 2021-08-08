@@ -61,7 +61,7 @@ class WearerCSV(StaticPage):
             print('->', full_filename)
             writer = csv.DictWriter(
                 handle,
-                fieldnames=['day','type','slug','name'],
+                fieldnames=['day','wearer','type','slug','name'],
             )
             writer.writeheader()
 
@@ -71,6 +71,7 @@ class WearerCSV(StaticPage):
             for wearing in wearings:
                 writer.writerow({
                     'day': wearing.day,
+                    'wearer': self.wearer,
                     'type': wearing.clothing.type,
                     'slug': wearing.clothing.slug,
                     'name': wearing.clothing.name,
