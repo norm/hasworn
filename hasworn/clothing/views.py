@@ -1,7 +1,8 @@
+from datetime import date
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DeleteView
 
-from .models import Wearing
+from .models import Clothing, Wearing, Worn
 
 
 class CreateWearing(CreateView):
@@ -23,3 +24,27 @@ class DeleteWearing(DeleteView):
         self.object.delete()
         self.request.user.generate_wearer_site_deleted(worn_pk, year)
         return HttpResponseRedirect('/')
+
+
+class CreateClothing(CreateView):
+    model = Clothing
+    fields = ('name', 'description', 'image')
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        self.object.created_by = self.request.user
+        if 'wearing' in self.get_form_kwargs()['data']:
+            worn = Worn.objects.create(
+                clothing = self.object,
+                wearer = self.request.user,
+            )
+            wearing = Wearing.objects.create(
+                worn = worn,
+                day = date.today(),
+            )
+        self.object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return '/'

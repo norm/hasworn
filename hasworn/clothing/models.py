@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
+import itertools
 
 from hasworn.wearers.models import Wearer
 
@@ -84,7 +86,13 @@ class Clothing(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id and not self.slug:
-            self.slug = slugify(self.name)[:127]
+            slug = slugify(self.name)[:127]
+            for count in itertools.count(10):
+                if not Clothing.objects.filter(slug=slug).exists():
+                    break
+                diff = "-%d" % count
+                slug = "%s%s" % (slug[:127-len(diff)], diff)
+            self.slug = slug
         super().save(*args, **kwargs)
 
 

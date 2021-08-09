@@ -35,6 +35,31 @@
   </form>
 {% endif %}
 
+<h2>New clothing</h2>
+<form method='post' action='{% url "create-clothing" %}' enctype="multipart/form-data">
+  {% csrf_token %}
+  <fieldset>
+    <legend>New clothing</legend>
+    <label>
+      Name
+      <input type='text' name='name'>
+    </label>
+    <label>
+      Description
+      <input type='text' name='description'>
+    </label>
+    <label>
+      Image
+      <input type='file' name='image'>
+    </label>
+    <label>
+      Wearing now?
+      <input type='checkbox' name='wearing'>
+    </label>
+    <input type='submit' value='Create'>
+  </fieldset>
+</form>
+
 <h2>Previously</h2>
 <ul>
   {% for wearing in request.user.worn_previously.all|slice:":5" %}

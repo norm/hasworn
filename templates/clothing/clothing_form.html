@@ -1,0 +1,40 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+
+<h1>{{form.name.value}}</h1>
+
+{% if form.non_field_errors %}
+<ul>
+{% for error in form.non_field_errors %}
+  <li>{{error}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<form method='post' action='' enctype="multipart/form-data">
+  {% csrf_token %}
+  <label>
+    Name
+    {% for error in form.errors.name %}
+      <strong>({{error}})</strong>
+    {% endfor %}
+    <input type='text' name='name'>
+  </label>
+  <label>
+    Description
+    {% for error in form.errors.description %}
+      <strong>({{error}})</strong>
+    {% endfor %}
+    <input type='text' name='description'>
+  </label>
+  <label>
+    Image
+    {% for error in form.errors.image %}
+      <strong>({{error}})</strong>
+    {% endfor %}
+    <input type='file' name='image'>
+  </label>
+  <input type='submit' value='Create'>
+</form>
+{% endblock %}
