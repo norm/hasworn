@@ -1,24 +1,82 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
+{% block page-style %}
+<style>
+  ol.year,
+  ol.year li {
+    margin: 0;
+    padding: 0;
+  }
+  ol.month {
+    margin: 0 0 0 -10px;
+    padding: 0;
+  }
+  ol.month li {
+    list-style: none;
+    float: left;
+    width: 100px;
+    min-height: 200px;
+    margin: 10px;
+    padding: 1px;
+    // outline: 1px solid blue;
+  }
+  ol.month li img {
+    // outline: 1px solid black;
+  }
+  ol.month::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  ol.month li.new-week {
+    clear: left;
+  }
+  ol.month li.Sun:first-child {
+    margin-left: 140px;
+  }
+  ol.month li.Mon:first-child {
+    margin-left: 260px;
+  }
+  ol.month li.Tue:first-child {
+    margin-left: 380px;
+  }
+  ol.month li.Wed:first-child {
+    margin-left: 500px;
+  }
+  ol.month li.Thu:first-child {
+    margin-left: 620px;
+  }
+  ol.month li.Fri:first-child {
+    margin-left: 740px;
+  }
+  /* FIXME midweek paddings */
+</style>
+{% endblock %}
+
 {% block content %}
 <h1>{{year}}</h1>
 
-<ol>
+<ol class='year'>
 {% for wearing in wearings %}
   {% ifchanged wearing.day.month %}
     {% if not forloop.first %}
     </ol>
     {% endif %}
     <h2>{{wearing.day|date:"F"}}</h2>
-    <ol>
+    <ol class='month'>
   {% endifchanged %}
-    <li value='{{wearing.day|date:"d"}}'>
-      {% thumbnail wearing.clothing.image "100x100" crop="center" as thumb %}
-        <img src='{{thumb.url}}' alt=''>
-      {% endthumbnail %}
-      {{wearing.day|date:"d"}}
-      <a href='{{wearing.clothing.static_site_url}}'>{{wearing.clothing}}</a>
+    <li value='{{wearing.day|date:"d"}}'
+        class='{{wearing.day|date:"D"}} {% if wearing.day.weekday == 5 %}new-week{% endif %}'>
+      <a href='{{wearing.clothing.static_site_url}}'>
+        {% thumbnail wearing.clothing.image "100x100" crop="center" as thumb %}
+          <img src='{{thumb.url}}' width=100 height=100 alt=''>
+        {% empty %}
+          <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+        {% endthumbnail %}
+        {{wearing.day|date:"d"}}
+        {{wearing.clothing}}
+      </a>
     </li>
 {% endfor %}
   </ol>

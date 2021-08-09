@@ -1,10 +1,18 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
+{% block page-style %}
+<style>
+  
+</style>
+{% endblock %}
+
 {% block content %}
   <h1>{{object.clothing}}</h1>
-  {% thumbnail wearing.clothing.image "1024x1024" crop="center" as thumb %}
+  {% thumbnail object.clothing.image "1024x1024" crop="center" as thumb %}
     <p><img src='{{thumb.url}}' alt=''></p>
+  {% empty %}
+    <p><img src='//hasworn.m17s.net/placeholder/tshirt.jpg' width=600 height=600 alt=''></p>
   {% endthumbnail %}
 
   <ul>
