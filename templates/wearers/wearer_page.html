@@ -1,35 +1,9 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
-{% block page-style %}
-<style>
-  ol {
-    margin: 0 0 0 -10px;
-    padding: 0;
-  }
-  ol li {
-    list-style: none;
-    float: left;
-    width: 100px;
-    min-height: 200px;
-    margin: 10px;
-    padding: 1px;
-    // outline: 1px solid blue;
-  }
-  ol li img {
-    // outline: 1px solid black;
-  }
-  ol::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-</style>
-{% endblock %}
-
 {% block content %}
 <h2>most recently worn</h2>
-<ol>
+<ol class='clothing'>
   {% for wearing in wearer.wearings.all|slice:':14' %}
   <li>
     <a href='{{wearing.clothing.static_site_url}}'>
@@ -46,7 +20,7 @@
   </ol>
 
 <h2>most worn in the last six months</h2>
-<ol>
+<ol class='clothing'>
 {% for worn in wearer.most_worn_recently|slice:':14' %}
   <li>
     <a href='{{worn.clothing.static_site_url}}'>
@@ -63,7 +37,7 @@
 </ol>
 
 <h2>most worn of all all time</h2>
-<ol>
+<ol class='clothing'>
 {% for worn in wearer.most_worn|slice:':14' %}
   <li>
     <a href='{{worn.clothing.static_site_url}}'>

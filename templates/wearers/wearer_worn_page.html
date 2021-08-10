@@ -1,23 +1,17 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
-{% block page-style %}
-<style>
-  
-</style>
-{% endblock %}
-
 {% block content %}
   <h1>{{object.clothing}}</h1>
   {% thumbnail object.clothing.image "1024x1024" crop="center" as thumb %}
-    <p><img src='{{thumb.url}}' alt=''></p>
+    <p><img src='{{thumb.url}}' alt='' width=820 height=820></p>
   {% empty %}
-    <p><img src='//hasworn.m17s.net/placeholder/tshirt.jpg' width=600 height=600 alt=''></p>
+    <p><img src='//hasworn.m17s.net/placeholder/tshirt.jpg' width=820 height=820 alt=''></p>
   {% endthumbnail %}
 
-  <ul>
+  <ol class='wearing'>
     {% for wearing in object.days_worn.all %}
     <li>{{wearing.day}}</li>
     {% endfor %}
-  </ul>
+  </ol>
 {% endblock %}

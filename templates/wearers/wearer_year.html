@@ -8,49 +8,6 @@
     margin: 0;
     padding: 0;
   }
-  ol.month {
-    margin: 0 0 0 -10px;
-    padding: 0;
-  }
-  ol.month li {
-    list-style: none;
-    float: left;
-    width: 100px;
-    min-height: 200px;
-    margin: 10px;
-    padding: 1px;
-    // outline: 1px solid blue;
-  }
-  ol.month li img {
-    // outline: 1px solid black;
-  }
-  ol.month::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-  ol.month li.new-week {
-    clear: left;
-  }
-  ol.month li.Sun:first-child {
-    margin-left: 140px;
-  }
-  ol.month li.Mon:first-child {
-    margin-left: 260px;
-  }
-  ol.month li.Tue:first-child {
-    margin-left: 380px;
-  }
-  ol.month li.Wed:first-child {
-    margin-left: 500px;
-  }
-  ol.month li.Thu:first-child {
-    margin-left: 620px;
-  }
-  ol.month li.Fri:first-child {
-    margin-left: 740px;
-  }
-  /* FIXME midweek paddings */
 </style>
 {% endblock %}
 
@@ -64,7 +21,7 @@
     </ol>
     {% endif %}
     <h2>{{wearing.day|date:"F"}}</h2>
-    <ol class='month'>
+    <ol class='month clothing'>
   {% endifchanged %}
     <li value='{{wearing.day|date:"d"}}'
         class='{{wearing.day|date:"D"}} {% if wearing.day.weekday == 5 %}new-week{% endif %}'>

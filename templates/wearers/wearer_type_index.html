@@ -1,34 +1,8 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
-{% block page-style %}
-<style>
-  ol {
-    margin: 0 0 0 -10px;
-    padding: 0;
-  }
-  ol li {
-    list-style: none;
-    float: left;
-    width: 100px;
-    min-height: 200px;
-    margin: 10px;
-    padding: 1px;
-    // outline: 1px solid blue;
-  }
-  ol li img {
-    // outline: 1px solid black;
-  }
-  ol::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-</style>
-{% endblock %}
-
 {% block content %}
-<ol>
+<ol class='clothing'>
   {% for wearing in wearings %}
     <li>
       {{wearing.day}}

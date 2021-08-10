@@ -2,9 +2,44 @@
 <head>
   <style>
     body {
-      width: 880px;
+      width: 820px;
       margin: 0 auto;
     }
+    ol.clothing {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    ol.clothing > li {
+      width: 100px;
+      margin-bottom: 10px;
+      list-style: none;
+      justify-self: center;
+    }
+    ol.clothing > li.Sat {
+      grid-column-start: 1;
+    }
+    ol.clothing > li.Sun {
+      grid-column-start: 2;
+    }
+    ol.clothing > li.Mon {
+      grid-column-start: 3;
+    }
+    ol.clothing > li.Tue {
+      grid-column-start: 4;
+    }
+    ol.clothing > li.Wed {
+      grid-column-start: 5;
+    }
+    ol.clothing > li.Thu {
+      grid-column-start: 6;
+    }
+    ol.clothing > li.Fri {
+      grid-column-start: 7;
+    }
+    /* FIXME overlap multiple wearings on one day */
   </style>
   {% block page-style %}{% endblock %}
 </head>
