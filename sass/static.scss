@@ -1,0 +1,221 @@
+@import "fonts";
+@import "layout";
+
+
+body {
+    margin: 0 auto;
+    background-color: #d9d9d9;
+    color: #222;
+    font-family: "Assistant", "News Cycle", "Lato", "PT Sans", sans-serif;
+    font-weight: 400;
+
+    width: 820px;
+    @include width_below(820px) { width: 660px; }
+    @include width_below(660px) { width: 610px; }
+    @include width_below(610px) { width: 490px; }
+    @include width_below(490px) { width: 400px; }
+    @include width_below(400px) { width: 320px; }
+}
+
+a {
+    color: #9f3052;
+}
+
+h1, h2, h3 {
+    font-family: "Raleway", sans-serif;
+    font-weight: 900;
+}
+
+header {
+    margin-bottom: 3em;
+
+    a {
+        color: #9f3052;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 1px;
+
+        &.wearer {
+            padding-right: 0.1em;
+        }
+
+        &.hasworn {
+            color: #666;
+            padding-left: 0.1em;
+        }
+    }
+
+    h1 {
+        line-height: 1;
+        font-size: 3em;
+        margin: 1em 0 0.33em;
+
+        a {
+            text-decoration-thickness: 5px;
+            text-underline-offset: 5px;
+        }
+    }
+
+    p {
+        font-family: "Raleway", sans-serif;
+        font-size: 1.4em;
+        line-height: 1.2;
+        margin: 0;
+    }
+}
+
+footer {
+    margin: 3em 0;
+}
+
+#body h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+h2 {
+    font-size: 2em;
+    margin: 1.5em 0 0.25em;
+}
+h3 {
+    color: #aaa;
+}
+
+
+ol.clothing {
+    padding: 0;
+    display: grid;
+
+    > li {
+        list-style: none;
+        justify-self: center;
+
+        img {
+            display: block;
+            height: auto;
+            outline: 1px solid #888;
+        }
+
+        b {
+            @extend .screen-reader-text;
+        }
+
+        &.Sat {
+            grid-column-start: 1;
+        }
+        &.Sun {
+            grid-column-start: 2;
+        }
+        &.Mon {
+            grid-column-start: 3;
+        }
+        &.Tue {
+            grid-column-start: 4;
+        }
+        &.Wed {
+            grid-column-start: 5;
+        }
+        &.Thu {
+            grid-column-start: 6;
+        }
+        &.Fri {
+            grid-column-start: 7;
+        }
+    }
+
+    // provides text on top of images
+    > li {
+        position: relative;
+
+        i {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.666);
+            color: rgb(240, 240, 240);
+            padding: 2px 5px;
+            font-size: 10px;
+            font-style: normal;
+            bottom: 0;
+            left: 0;
+
+            span {
+                color: rgb(128, 128, 128);
+            }
+
+            em {
+                font-style: normal;
+                font-weight: 800;
+                color: #cfc;
+            }
+        }
+
+        a i {
+            bottom: 10px;
+            font-size: 14px;
+            max-width: 80px;
+            font-weight: 800;
+        }
+    }
+    &.large > li {
+        i {
+            bottom: 5px;
+            left: 5px;
+        }
+        a i {
+            bottom: 25px;
+            max-width: 170px;
+        }
+    }
+
+    // multi-columns layouts
+    gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    @include width_below(820px) { gap: 12px;
+                                  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; }
+    @include width_below(660px) { gap: 14px; }
+    @include width_below(610px) { gap: 10px;
+                                  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; }
+    @include width_below(490px) { gap: 10px; }
+    @include width_below(400px) { gap: 8px; 
+                                  grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+    > li,
+    > li img {
+        width: 100px;
+        @include width_below(660px) { width: 90px; }
+        @include width_below(610px) { width: 86px; }
+        @include width_below(490px) { width: 72px; }
+        @include width_below(400px) { width: 74px; }
+    }
+
+    &.most {
+        // hide overflow items caused by wrapping
+        @include width_above(820px) {
+            @include hide_grid_widows(7);
+        }
+        @include width_between(610px, 820px) {
+            @include hide_grid_widows(6);
+        }
+        @include width_between(400px, 610px) {
+            @include hide_grid_widows(5);
+        }
+        @include width_below(400px) {
+            @include hide_grid_widows(4);
+        }
+    }
+
+    &.large {
+        gap: 20px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        @include width_below(660px) { grid-template-columns: 1fr 1fr 1fr; }
+        @include width_below(490px) { grid-template-columns: 1fr 1fr; }
+
+        > li,
+        > li img {
+            width: 190px; 
+            @include width_below(820px) { width: 150px; }
+            @include width_below(660px) { width: 190px; }
+            @include width_below(610px) { width: 150px; }
+            @include width_below(490px) { width: 190px; }
+            @include width_below(400px) { width: 150px; }
+        }
+    }
+}

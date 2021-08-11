@@ -46,6 +46,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Install sass
+        run: pip install libsass==0.21.0 awscli==1.20.20
+      - name: Publish production CSS
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: ./update_css
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action

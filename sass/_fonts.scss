@@ -1,0 +1,6 @@
+@mixin google_font($family, $weights) {
+    @import url("https://fonts.googleapis.com/css?family=#{$family}:#{$weights}&subset=latin&display=swap") screen;
+}
+
+@include google_font('Assistant',   '400,800');
+@include google_font('Raleway',     '400,900');

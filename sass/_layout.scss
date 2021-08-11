@@ -1,0 +1,38 @@
+@mixin width_above($width) {
+    @media only screen and (min-width: $width) {
+        @content;
+    }
+}
+@mixin width_below($width) {
+    @media only screen and (max-width: $width) {
+        @content;
+    }
+}
+@mixin width_between($lower, $upper) {
+    @media only screen and (min-width: $lower) and (max-width: $upper) {
+        @content;
+    }
+}
+
+@mixin hide_grid_widows($grid_width) {
+    li:nth-child(#{$grid_width}n+1):nth-last-child(-n+#{$grid_width}),
+        li:nth-child(#{$grid_width}n+1):nth-last-child(-n+#{$grid_width}) ~ li {
+            display: none;
+    }
+}
+
+@mixin screen-reader-text {
+    position: absolute;
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    width: 1px;
+    word-wrap: normal !important;
+}
+.screen-reader-text {
+    @include screen-reader-text;
+}

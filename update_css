@@ -1,0 +1,20 @@
+#!/usr/bin/env -S bash -euo pipefail
+
+pysassc --style expanded sass/static.scss > /tmp/static.css
+
+if [ "${HASWORN_ENV:-prod}" = 'dev' ]; then
+    cp /tmp/static.css baked/norm
+    echo -- [$(date +'%H:%M:%S')] baked/norm/static.css
+    exit 0
+fi
+
+sha=$( shasum -a 256 /tmp/static.css | cut -c1-7 )
+aws s3 cp \
+    --acl public-read \
+    --cache-control "max-age=31536000, immutable" \
+    /tmp/static.css \
+    s3://hasworn.m17s.net/${sha}.css
+
+echo \
+    "<link rel='stylesheet' href='https://hasworn.m17s.net/${sha}.css'>" \
+        > templates/wearers/styles.html

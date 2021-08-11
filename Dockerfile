@@ -8,6 +8,7 @@ WORKDIR /app
 RUN    apk update \
     && apk add postgresql-dev \
     && apk add gcc \
+    && apk add g++ \
     && apk add python3-dev \
     && apk add jpeg-dev \
     && apk add zlib-dev \

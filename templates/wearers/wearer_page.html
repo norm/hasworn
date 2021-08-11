@@ -20,8 +20,8 @@
   </ol>
 
 <h2>most worn in the last six months</h2>
-<ol class='clothing'>
-{% for worn in wearer.most_worn_recently|slice:':14' %}
+<ol class='clothing most'>
+{% for worn in wearer.most_worn_recently|slice:':16' %}
   <li>
     <a href='{{worn.clothing.static_site_url}}'>
       {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
@@ -37,8 +37,8 @@
 </ol>
 
 <h2>most worn of all all time</h2>
-<ol class='clothing'>
-{% for worn in wearer.most_worn|slice:':14' %}
+<ol class='clothing most'>
+{% for worn in wearer.most_worn|slice:':16' %}
   <li>
     <a href='{{worn.clothing.static_site_url}}'>
       {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
