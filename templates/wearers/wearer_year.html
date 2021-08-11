@@ -8,6 +8,16 @@
     margin: 0;
     padding: 0;
   }
+  ol.year h2 {
+    margin-top: 0;
+  }
+  ol.year ol.month {
+    margin-bottom: 2em;
+  }
+  #body h1,
+  ol.year h2 {
+    text-align: center;
+  }
 </style>
 {% endblock %}
 
@@ -31,9 +41,8 @@
         {% empty %}
           <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
         {% endthumbnail %}
-        {{wearing.day|date:"d"}}
-        {{wearing.clothing}}
       </a>
+      <i><b>{{wearing.day|date:"F"}}</b> {{wearing.day|date:"jS"}}</i>
     </li>
 {% endfor %}
   </ol>

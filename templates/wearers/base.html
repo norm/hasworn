@@ -12,11 +12,21 @@
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
       gap: 20px;
     }
+    ol.clothing.large {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
     ol.clothing > li {
       width: 100px;
       margin-bottom: 10px;
       list-style: none;
       justify-self: center;
+    }
+    ol.clothing.large > li {
+      width: 190px;
+    }
+    ol.clothing > li img {
+      display: block;
+      outline: 1px solid #888;
     }
     ol.clothing > li.Sat {
       grid-column-start: 1;
@@ -39,6 +49,53 @@
     ol.clothing > li.Fri {
       grid-column-start: 7;
     }
+
+    ol.clothing > li b {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    /* text on top of images */
+    ol.clothing > li {
+      position: relative;
+    }
+    ol.clothing > li i {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.666);
+      color: rgb(240, 240, 240);
+      padding: 2px 5px;
+      font-size: 12px;
+      font-style: normal;
+      bottom: 0;
+      left: 0;
+    }
+    ol.clothing > li i span {
+      color: rgb(128, 128, 128);
+    }
+    ol.clothing > li i em {
+      font-style: normal;
+      font-weight: 800;
+      color: #cfc;
+    }
+    ol.clothing > li a i {
+      bottom: 10px;
+      font-size: 14px;
+      max-width: 80px;
+      font-weight: 800;
+    }
+    ol.clothing.large > li i {
+      bottom: 5px;
+      left: 5px;
+    }
+    ol.clothing.large > li a i {
+      bottom: 25px;
+      max-width: 170px;
+    }
+
     /* FIXME overlap multiple wearings on one day */
   </style>
   {% block page-style %}{% endblock %}
