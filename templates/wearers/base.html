@@ -15,6 +15,28 @@
       font-weight: 900;
     }
 
+    header {
+      margin-bottom: 3em;
+    }
+    header h1 {
+      line-height: 1;
+      font-size: 3em;
+      margin: 1em 0 0.33em;
+    }
+    header p {
+      font-family: "Raleway", sans-serif;
+      font-size: 1.4em;
+      line-height: 1.2;
+      margin: 0;
+    }
+    header a.wearer {
+      padding-right: 0.1em;
+    }
+    header a.hasworn {
+      color: #666;
+      padding-left: 0.1em;
+    }
+
     ol.clothing {
       margin: 0;
       padding: 0;
@@ -112,21 +134,25 @@
 </head>
 <body>
 {% block header %}
-  <h1>{{wearer}}</h1>
-
-  <p>
-    <a href='/'>{{wearer.get_name}}</a> has worn
-    <a href='/tshirts/'>{{wearer.has_worn.count}} different tshirts</a>
-    {{wearer.wearings.count}} times, in 
-    {% for year in wearer.years_active %}
-      {% if forloop.last %}
-        {% if not forloop.first %} and {% endif %}
-        <a href='/{{year}}/'>{{year}}</a>.
-      {% else %}
-        <a href='/{{year}}/'>{{year}}</a>,
-      {% endif %}
-    {% endfor %}
-  </p>
+  <header>
+    <h1>
+      <a href='/' class='wearer'>{{wearer}}</a>.<a 
+         href='https://hasworn.com/' class='hasworn'>hasworn.com</a>
+    </h1>
+    <p>
+      <a href='/'>{{wearer.get_name}}</a> has worn
+      <a href='/tshirts/'>{{wearer.has_worn.count}} different tshirts</a>
+      {{wearer.wearings.count}} times, in 
+      {% for year in wearer.years_active %}
+        {% if forloop.last %}
+          {% if not forloop.first %} and {% endif %}
+          <a href='/{{year}}/'>{{year}}</a>.
+        {% else %}
+          <a href='/{{year}}/'>{{year}}</a>,
+        {% endif %}
+      {% endfor %}
+    </p>
+  </header>
 {% endblock %}
 {% block content %}
 {% endblock %}
