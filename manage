@@ -2,8 +2,13 @@
 
 declare -a env_vars
 
+# django specifics
 [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ] \
     && env_vars+=(-e DJANGO_SUPERUSER_PASSWORD=$DJANGO_SUPERUSER_PASSWORD)
+
+# hasworn specifics
+export COMMIT_SHA=${COMMIT_SHA:-$(git show-ref --head --hash=7 | head -1)}
+env_vars+=(-e COMMIT_SHA=$COMMIT_SHA)
 
 ./compose run --rm \
     "${env_vars[@]}" \

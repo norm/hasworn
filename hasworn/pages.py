@@ -27,6 +27,7 @@ class StaticPage:
         return {
             "wearer": self.wearer,
             "object": self.object,
+            "COMMIT_SHA": settings.COMMIT_SHA or 'development',
         }
 
     def render_page(self):

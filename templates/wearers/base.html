@@ -37,6 +37,10 @@
       padding-left: 0.1em;
     }
 
+    footer {
+      margin: 3em 0;
+    }
+
     ol.clothing {
       margin: 0;
       padding: 0;
@@ -155,6 +159,14 @@
   </header>
 {% endblock %}
 {% block content %}
+{% endblock %}
+
+{% block footer %}
+  <footer>
+    <em>hasworn.com</em> — a project by 
+    <a href='https://marknormanfrancis.com/'>Mark Norman Francis</a>.
+    Source on <a href='https://github.com/norm/hasworn/'>GitHub</a>, this is version <a href='https://github.com/norm/hasworn/commit/{{COMMIT_SHA}}'>{{COMMIT_SHA}}</a>.
+  </footer>
 {% endblock %}
 </body>
 </html>
