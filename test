@@ -1,0 +1,7 @@
+#!/usr/bin/env -S bash -euo pipefail
+
+export HASWORN_ENV=dev
+
+./compose run --rm \
+    "${env_vars[@]}" \
+    app pytest

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import itertools
 
 from hasworn.wearers.models import Wearer
