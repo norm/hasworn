@@ -1,43 +1,19 @@
-name: Docker
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
+name: Publish hasworn
 
 on:
   push:
     branches: [ main ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ main ]
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
 
 jobs:
 
-  run_tests:
-    name: Run tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Bring up the stack
-        run: docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
-      - name: Check for containers
-        run: docker ps -a
-      - name: Run tests
-        run: ./test
-
   build:
     name: Build app docker image
-    needs: run_tests
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -46,40 +22,58 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Install sass
-        run: pip install libsass==0.21.0 awscli==1.20.20
+
       - name: Publish production CSS
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: ./update_css
+        run: |
+          pip install libsass==0.21.0 awscli==1.20.20
+          ./update_css
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
+          tags: hasworn:latest
+
+      - name: Inspect the build image
+        run: docker image inspect hasworn:latest
+
+      - name: Bring up the stack
+        run: docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
+
+      - name: Run tests
+        run: ./test
+
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
-        id: meta
         uses: docker/metadata-action@v3
+        id: meta
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      - name: Push Docker image
+        uses: docker/build-push-action@v2
         with:
           context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
