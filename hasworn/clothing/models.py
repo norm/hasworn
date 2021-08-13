@@ -133,10 +133,41 @@ class Wearing(models.Model):
     day = models.DateField(
         default = timezone.now,
     )
+    days_since_last = models.IntegerField(
+        blank = True,
+        null = True,
+    )
 
     @property
     def clothing(self):
         return self.worn.clothing
+
+    def update_days_since_last(self):
+        try:
+            previous = Wearing.objects.filter(
+                    worn = self.worn,
+                    day__lt = self.day,
+                ).order_by('-day')[0]
+            self.days_since_last = (self.day - previous.day).days
+        except IndexError:
+            pass
+
+        # wearings can be added retrospectively, so make sure "future"
+        # wearings now have the right value too
+        try:
+            next = Wearing.objects.filter(
+                    worn = self.worn,
+                    day__gt = self.day,
+                ).order_by('day')[0]
+            next.days_since_last = (next.day - self.day).days
+            next.save()
+        except IndexError:
+            pass
+
+    def save(self, *args, **kwargs):
+        if not self.days_since_last:
+            self.update_days_since_last()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return u'%s worn by %s on %s' % (

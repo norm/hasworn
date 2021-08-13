@@ -5,11 +5,10 @@ from hasworn.wearers.models import Wearer
 
 @pytest.fixture
 def wendy(db) -> Wearer:
-    return Wearer.objects.create(
-            username='wendy',
-        )
+    return Wearer.objects.create(username='wendy')
 
-def test_pytest(db, wendy) -> None:
+def test_get_name(db, wendy) -> None:
+    assert Wearer.objects.count() == 1
     assert wendy.username == 'wendy'
     assert wendy.get_short_name() == 'wendy'
     assert wendy.get_full_name() == None
