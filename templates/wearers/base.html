@@ -5,7 +5,7 @@
   {% include 'wearers/styles.html' %}
   {% block page-style %}{% endblock %}
 </head>
-<body>
+<body class='{% block body-class %}{% endblock %}'>
 {% block header %}
   <header>
     <h1>

@@ -99,26 +99,30 @@ ol.clothing {
             @extend .screen-reader-text;
         }
 
-        &.Sat {
-            grid-column-start: 1;
-        }
-        &.Sun {
-            grid-column-start: 2;
-        }
-        &.Mon {
-            grid-column-start: 3;
-        }
-        &.Tue {
-            grid-column-start: 4;
-        }
-        &.Wed {
-            grid-column-start: 5;
-        }
-        &.Thu {
-            grid-column-start: 6;
-        }
-        &.Fri {
-            grid-column-start: 7;
+        @include width_above(819px) {
+            // when there is space to lay out a week across,
+            // line up Saturdays on the left always
+            &.Sat {
+                grid-column-start: 1;
+            }
+            &.Sun {
+                grid-column-start: 2;
+            }
+            &.Mon {
+                grid-column-start: 3;
+            }
+            &.Tue {
+                grid-column-start: 4;
+            }
+            &.Wed {
+                grid-column-start: 5;
+            }
+            &.Thu {
+                grid-column-start: 6;
+            }
+            &.Fri {
+                grid-column-start: 7;
+            }
         }
     }
 
@@ -217,5 +221,24 @@ ol.clothing {
             @include width_below(490px) { width: 190px; }
             @include width_below(400px) { width: 150px; }
         }
+    }
+}
+
+body.year {
+    ol.year,
+    ol.year > li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    ol.year h2,
+    #body h1 {
+        text-align: center;
+    }
+    #body h1 {
+        font-size: 3em;
+    }
+    ol.year li:first-child h2 {
+        margin-top: 0;
     }
 }

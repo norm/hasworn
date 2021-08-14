@@ -1,25 +1,7 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
-{% block page-style %}
-<style>
-  ol.year,
-  ol.year li {
-    margin: 0;
-    padding: 0;
-  }
-  ol.year h2 {
-    margin-top: 0;
-  }
-  ol.year ol.month {
-    margin-bottom: 2em;
-  }
-  #body h1,
-  ol.year h2 {
-    text-align: center;
-  }
-</style>
-{% endblock %}
+{% block body-class %}year{% endblock %}
 
 {% block content %}
 <h1>{{year}}</h1>
@@ -28,10 +10,12 @@
 {% for wearing in wearings %}
   {% ifchanged wearing.day.month %}
     {% if not forloop.first %}
-    </ol>
+      </ol>
+    </li>
     {% endif %}
-    <h2>{{wearing.day|date:"F"}}</h2>
-    <ol class='month clothing'>
+    <li>
+      <h2>{{wearing.day|date:"F"}}</h2>
+      <ol class='month clothing'>
   {% endifchanged %}
     <li value='{{wearing.day|date:"d"}}'
         class='{{wearing.day|date:"D"}} {% if wearing.day.weekday == 5 %}new-week{% endif %}'>
@@ -45,6 +29,7 @@
       <i><b>{{wearing.day|date:"F"}}</b> {{wearing.day|date:"jS"}}</i>
     </li>
 {% endfor %}
+    </li>
   </ol>
 </ol>
 
