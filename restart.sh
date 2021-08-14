@@ -11,6 +11,7 @@ function main {
     collect_static_files
     start_new_image
     remove_old_image
+    prune_docker
 }
 
 function run_compose {
@@ -62,6 +63,11 @@ function remove_old_image {
     scale_app 1
 
     reload_nginx
+}
+
+function prune_docker {
+    docker image prune --force --all --filter 'until=168h'
+    docker container prune --force
 }
 
 function scale_app {
