@@ -15,7 +15,7 @@
     <p>
       <a href='/'>{{wearer.get_name}}</a> has worn
       <a href='/tshirts/'>{{wearer.has_worn.count}} different tshirts</a>
-      {{wearer.wearings.count}} times, in 
+      {{wearer.wearings.count}} times, across
       {% for year in wearer.years_active %}
         {% if forloop.last %}
           {% if not forloop.first %} and {% endif %}
