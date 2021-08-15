@@ -80,6 +80,22 @@ h3 {
     color: #aaa;
 }
 
+ul.sorting {
+    margin: 0 0 2em;
+    padding: 0;
+    color: #9f3052;
+
+    li {
+        margin: 0;
+        padding: 0;
+        list-style: inside square;
+
+        em {
+            font-weight: bold;
+            font-style: normal;
+        }
+    }
+}
 
 ol.clothing {
     padding: 0;
@@ -240,6 +256,20 @@ body.year {
     }
     ol.year li:first-child h2 {
         margin-top: 0;
+    }
+}
+
+body.type {
+    ol.clothing.large > li i {
+        padding-right: 35px;
+    }
+    ol.clothing.large > li a i {
+        bottom: 42px;
+        @include width_below(820px) { bottom: 38px; }
+        @include width_below(660px) { bottom: 42px; }
+        @include width_below(610px) { bottom: 38px; }
+        @include width_below(490px) { bottom: 42px; }
+        @include width_below(400px) { bottom: 38px; }
     }
 }
 

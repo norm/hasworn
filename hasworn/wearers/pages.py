@@ -46,7 +46,26 @@ class WearerTypeIndex(StaticPage):
 
     def get_context(self, **kwargs):
         context = super().get_context(**kwargs)
+        context['sort_by'] = 'often'
         context['wearings'] = self.wearer.most_worn()
+        return context
+
+
+class WearerMostRecentlyWorn(StaticPage):
+    template = 'wearers/wearer_type_index.html'
+
+    def get_filename(self):
+        return "%s/%s/most_recent.html" % (self.wearer.username, 'tshirts')
+
+    def get_context(self, **kwargs):
+        context = super().get_context(**kwargs)
+        worn_set = self.wearer.worn_set.all()
+        context['sort_by'] = 'recent'
+        context['wearings'] = sorted(
+                worn_set,
+                key=lambda worn: worn.days_worn.first().day,
+                reverse=True,
+            )
         return context
 
 

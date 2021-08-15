@@ -1,23 +1,27 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
-{% block page-style %}
-<style>
-  ol.clothing.large > li a i {
-    bottom: 42px;
-  }
-  ol.clothing.large > li i {
-    padding-right: 35px;
-    max-width: 140px;
-  }
-  ol.clothing.large > li a i {
-    padding-right: 5px;
-  }
-</style>
-{% endblock %}
+{% block body-class %}type {{wearings.0.clothing.type}}{% endblock %}
 
 {% block content %}
 <h1>all {{wearings.0.clothing.type}}s</h1>
+
+<ul class='sorting'>
+  <li>
+    {% if sort_by == 'often' %}
+      <em>sorted by most often worn</em>
+    {% else %}
+      <a href='/{{wearings.0.clothing.type}}s/'>sorted by most often worn</a>
+    {% endif %}
+  </li>
+  <li>
+    {% if sort_by == 'recent' %}
+      <em>sorted by most recently worn</em>
+    {% else %}
+      <a href='/{{wearings.0.clothing.type}}s/most_recent'>sorted by most recently worn</a>
+    {% endif %}
+  </li>
+</ul>
 
 <ol class='clothing large'>
   {% for wearing in wearings %}
@@ -31,8 +35,8 @@
         <i>{{wearing.clothing.name}}</i>
       </a>
       <i>
-        worn <em>{{wearing.num_worn}}</em> times<!--,
-        most recently <em>19 days</em> ago-->
+        worn <em>{{wearing.times_worn}}</em>,
+        most recently <em>{{wearing.last_worn_days_ago}}</em>
       </i>
     </li>
   {% endfor %}
