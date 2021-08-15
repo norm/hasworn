@@ -1,3 +1,5 @@
+from datetime import date
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -109,6 +111,52 @@ class Worn(models.Model):
         Clothing,
         on_delete = models.CASCADE,
     )
+
+    @property
+    def last_worn(self):
+        return self.days_worn.first()
+
+    @property
+    def times_worn(self):
+        times = self.days_worn.count()
+        if times == 0:
+            return 'never'
+        elif times == 1:
+            return 'once'
+        elif times == 2:
+            return 'twice'
+        else:
+            return '%s times' % times
+
+    @property
+    def last_worn_days_ago(self):
+        delta = relativedelta(date.today(), self.last_worn.day)
+        if delta.years:
+            if delta.years == 1:
+                return '1 year ago'
+            else:
+                return '%s years ago' % delta.years
+        else:
+            if delta.months >= 3:
+                return '%s months ago' % delta.months
+            else:
+                if self.last_worn_days == 0:
+                    return 'today'
+                elif self.last_worn_days == 1:
+                    return 'yesterday'
+        return '%s days ago' % self.last_worn_days
+
+    @property
+    def last_worn_days(self):
+        return (date.today() - self.last_worn.day).days
+
+    @property
+    def average_days_between_wearings(self):
+        sum = int(self.days_worn.aggregate(
+                    models.Sum('days_since_last')
+                )['days_since_last__sum'])
+        total_days = sum + self.last_worn_days
+        return int(total_days / self.days_worn.count())
 
     def __str__(self):
         return u'%s (worn by %s)' % (

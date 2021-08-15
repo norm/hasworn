@@ -1,17 +1,64 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
+{% block body-class %}clothing {{object.clothing.type}}{% endblock %}
+
 {% block content %}
-  <h1>{{object.clothing}}</h1>
+  <h1>
+    {{wearer.get_name}} has worn <q>{{object.clothing}}</q>
+    {{object.times_worn}}{% if object.days_worn.count > 3 %},
+    on average every {{object.average_days_between_wearings}} days{% endif %}.
+  </h1>
   {% thumbnail object.clothing.image "1024x1024" crop="center" as thumb %}
-    <p><img src='{{thumb.url}}' alt='' width=820 height=820></p>
+    <p class='image'><img src='{{thumb.url}}' alt='' width=1024 height=1024></p>
   {% empty %}
-    <p><img src='//hasworn.m17s.net/placeholder/tshirt.jpg' width=820 height=820 alt=''></p>
+    <p class='image'><img src='//hasworn.m17s.net/placeholder/tshirt.jpg' width=1024 height=1024 alt=''></p>
   {% endthumbnail %}
 
-  <ol class='wearing'>
-    {% for wearing in object.days_worn.all %}
-    <li>{{wearing.day}}</li>
-    {% endfor %}
-  </ol>
+  {% if object.days_worn.first %}
+    <ol class='wearing'>
+      <ol>
+        <li class='last
+            {% if object.last_worn_days > 27 %}since_month{% endif %}
+            {% if object.last_worn_days > 55 %}since_twomonth{% endif %}
+            {% if object.last_worn_days > 83 %}since_quarter{% endif %}
+            {% if object.last_worn_days > 180 %}since_half{% endif %}
+            {% if object.last_worn_days > 250 %}since_threequarter{% endif %}
+            {% if object.last_worn_days > 364 %}since_year{% endif %}
+            {% if object.last_worn_days > 730 %}since_years{% endif %}
+        '>
+          last worn {{object.last_worn_days_ago}}
+        </li>
+      </ol>
+      {% for wearing in object.days_worn.all %}
+        {% ifchanged wearing.day.year %}
+          {% if not forloop.first %}
+        </ol>
+      </li>
+          {% endif %}
+      <li>
+        <h2>{{wearing.day|date:"Y"}}</h2>
+        <ol>
+        {% endifchanged %}
+          <li class='
+              {% if wearing.days_since_last > 27 %}since_month{% endif %}
+              {% if wearing.days_since_last > 55 %}since_twomonth{% endif %}
+              {% if wearing.days_since_last > 83 %}since_quarter{% endif %}
+              {% if wearing.days_since_last > 180 %}since_half{% endif %}
+              {% if wearing.days_since_last > 250 %}since_threequarter{% endif %}
+              {% if wearing.days_since_last > 364 %}since_year{% endif %}
+              {% if wearing.days_since_last > 730 %}since_years{% endif %}
+          '>
+            {{wearing.day|date:'l, F jS'}}
+            {% if wearing.days_since_last %}
+              <span>{{wearing.days_since_last}} days after…</span>
+            {% endif %}
+          </li>
+      {% endfor %}
+        </ol>
+      </li>
+    </ol>
+  {% else %}
+    <p class='last'>It has never been worn.</p>
+  {% endif %}
 {% endblock %}

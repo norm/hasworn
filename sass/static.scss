@@ -242,3 +242,94 @@ body.year {
         margin-top: 0;
     }
 }
+
+body.clothing {
+    p.image {
+        width: 900px;
+        margin: 0 -40px;
+
+        @include width_below(820px) { width: 740px; }
+        @include width_below(660px) { width: 660px;
+                                      margin: 0 -25px; }
+        @include width_below(610px) { width: 540px; }
+        @include width_below(490px) { width: 440px;
+                                      margin: 0 -20px; }
+        @include width_below(400px) { width: 360px; }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            outline: 4px solid #9f3052;
+        }
+    }
+
+    ol.wearing {
+        margin: 0;
+        padding: 0;
+        max-width: 600px;
+        // font-size: 19px;
+
+        li {
+            list-style: none;
+            line-height: 1.6;
+            clear: right;
+
+            span {
+                // font-size: 0.8em;
+                line-height: 2.2;
+                color: #999;
+                float: right;
+            }
+
+            &.last {
+                color: #9f3052;
+                padding-top: 0.5em;
+                padding-bottom: 0.5em;
+                font-weight: bold;
+                // font-size: 22px;
+            }
+
+            &.since_month        { padding-bottom: 1em; }
+            &.since_twomonth     { padding-bottom: 2em; }
+            &.since_quarter      { padding-bottom: 3em; }
+            &.since_half         { padding-bottom: 4em; }
+            &.since_threequarter { padding-bottom: 7em; }
+            &.since_year         { padding-bottom: 10em; }
+            &.since_years        { padding-bottom: 15em; }
+        }
+
+        h2 {
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            width: 170px;
+            float: left;
+            text-align: right;
+            color: #9f3052;
+        }
+        ol {
+            margin-left: 210px;
+            border-left: 5px solid #9f3052;
+        }
+        ol:last-child {
+            padding-bottom: 1.5em;
+        }
+
+        @include width_below(610px) {
+            h2 { width: 100px; }
+            ol { margin-left: 140px; }
+        }
+        @include width_below(490px) {
+            h2 { width: 80px; font-size: 22px; }
+            ol { margin-left: 100px; padding-left: 20px; }
+            li { font-size: 16px; }
+            li.last { font-size: 18px; }
+        }
+        @include width_below(400px) {
+            h2 { width: 50px; font-size: 18px; }
+            ol { margin-left: 70px; padding-left: 20px; }
+            li { font-size: 14px; }
+            li.last { font-size: 15px; }
+        }
+    }
+}
