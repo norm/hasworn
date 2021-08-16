@@ -93,6 +93,12 @@ class Wearer(AbstractUser):
                 num_worn__gt = 1
             ).order_by('-num_worn')
 
+    def most_worn_average(self):
+        return sorted(
+                self.worn_set.all(),
+                key=lambda worn: worn.average_days_between_wearings,
+            )
+
     def years_active(self):
         return [ year.year for year in self.wearings.dates('day', 'year') ]
 

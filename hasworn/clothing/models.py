@@ -152,11 +152,18 @@ class Worn(models.Model):
 
     @property
     def average_days_between_wearings(self):
-        sum = int(self.days_worn.aggregate(
-                    models.Sum('days_since_last')
-                )['days_since_last__sum'])
-        total_days = sum + self.last_worn_days
-        return int(total_days / self.days_worn.count())
+        if self.days_worn.count() < 2:
+            # use the days since the first anything worn, -1
+            return (
+                    (date.today() - self.wearer.wearings.last().day).days
+                    + 1
+                )
+        else:
+            sum = int(self.days_worn.aggregate(
+                        models.Sum('days_since_last')
+                    )['days_since_last__sum'])
+            total_days = sum + self.last_worn_days
+            return int(total_days / self.days_worn.count())
 
     def __str__(self):
         return u'%s (worn by %s)' % (

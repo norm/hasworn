@@ -17,7 +17,24 @@
     <i><b>on</b> {{wearing.day}}</i>
   </li>
   {% endfor %}
-  </ol>
+</ol>
+
+<h2>most frequently worn, on average</h2>
+<ol class='clothing most'>
+{% for worn in wearer.most_worn_average|slice:':16' %}
+  <li>
+    <a href='{{worn.clothing.static_site_url}}'>
+      {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
+        <img src='{{thumb.url}}' width=100 height=100 alt=''>
+      {% empty %}
+        <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+      {% endthumbnail %}
+      <b>{{worn.clothing}}</b>
+    </a>
+    <i>every <em>{{worn.average_days_between_wearings}}</em> days</i>
+  </li>
+{% endfor %}
+</ol>
 
 <h2>most worn in the last six months</h2>
 <ol class='clothing most'>
