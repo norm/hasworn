@@ -35,6 +35,8 @@ class WearerYear(StaticPage):
                 day__gte=date(self.year, 1, 1),
                 day__lte=date(self.year, 12, 31)
             ).order_by('day')
+        context['distinct_wearings'] = \
+            context['wearings'].values('worn').distinct()
         return context
 
 

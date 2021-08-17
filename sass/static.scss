@@ -276,15 +276,8 @@ body.year {
         padding: 0;
         list-style: none;
     }
-    ol.year h2,
-    #body h1 {
+    ol.year h2 {
         text-align: center;
-    }
-    #body h1 {
-        font-size: 3em;
-    }
-    ol.year li:first-child h2 {
-        margin-top: 0;
     }
 }
 

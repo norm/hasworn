@@ -4,7 +4,10 @@
 {% block body-class %}year{% endblock %}
 
 {% block content %}
-<h1>{{year}}</h1>
+<h1>
+  In {{year}} {{wearer.get_name}} wore {{distinct_wearings.count}}
+  different tshirts {{wearings.count}} times.
+</h1>
 
 <ol class='year'>
 {% for wearing in wearings %}
