@@ -21,7 +21,14 @@
       <ol class='month clothing'>
   {% endifchanged %}
     <li value='{{wearing.day|date:"d"}}'
-        class='{{wearing.day|date:"D"}} {% if wearing.day.weekday == 5 %}new-week{% endif %}'>
+      class='
+        {{wearing.day|date:"D"}}
+        {% if wearing.day.weekday == 5 %}new-week{% endif %}
+        {% ifchanged wearing.day %}
+        {% else %}
+          same-day
+        {% endifchanged %}
+      '>
       <a href='{{wearing.clothing.static_site_url}}'>
         {% thumbnail wearing.clothing.image "100x100" crop="center" as thumb %}
           <img src='{{thumb.url}}' width=100 height=100 alt=''>

@@ -150,6 +150,10 @@ ol.clothing {
             &.Fri {
                 grid-column-start: 7;
             }
+            &.same-day {
+                margin-top: -95px;
+                border-top: 3px solid #d9d9d9;
+            }
         }
     }
 
