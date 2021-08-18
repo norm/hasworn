@@ -1,7 +1,7 @@
 import csv
 from datetime import date
 from django.conf import settings
-from hasworn.pages import ModelPage, StaticPage
+from hasworn.pages import ModelPage, StaticPage, FeedPage
 import os
 
 
@@ -97,3 +97,22 @@ class WearerCSV(StaticPage):
                     'slug': wearing.clothing.slug,
                     'name': wearing.clothing.name,
                 })
+
+
+class WearerAtom(FeedPage):
+    def get_filename(self):
+        return '%s/index.atom' % self.wearer.username
+
+    def get_feed_link(self):
+        return 'https://%s.hasworn.com/' % self.wearer.username
+
+    def get_feed_url(self):
+        return 'https://%s.hasworn.com/index.atom' % self.wearer.username
+
+    def get_feed_title(self):
+        return 'What %s has worn' % self.wearer.get_name()
+
+    def get_context(self):
+        context = super().get_context()
+        context['feed_items'] = self.wearer.wearings.all()[:20]
+        return context

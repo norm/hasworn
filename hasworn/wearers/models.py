@@ -11,6 +11,7 @@ from .pages import (
     WearerTypeIndex,
     WearerMostRecentlyWorn,
     WearerCSV,
+    WearerAtom,
 )
 
 
@@ -111,6 +112,7 @@ class Wearer(AbstractUser):
         WearerYear(wearer=self, year=year).create()
         WearerPage(wearer=self).create()
         WearerCSV(wearer=self).create()
+        WearerAtom(wearer=self).create()
 
     def generate_wearer_site(self):
         WearerPage(wearer=self).create()
@@ -121,3 +123,4 @@ class Wearer(AbstractUser):
         WearerTypeIndex(wearer=self).create()
         WearerMostRecentlyWorn(wearer=self).create()
         WearerCSV(wearer=self).create()
+        WearerAtom(wearer=self).create()

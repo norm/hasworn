@@ -19,6 +19,7 @@ server {
     root            /baked/$1;
 
     location = /index.csv {}
+    location = /index.atom {}
     location   / {
         try_files $uri.html $uri/index.html =404;
     }

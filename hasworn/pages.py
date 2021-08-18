@@ -3,6 +3,7 @@ from os import makedirs, path
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.template.loader import render_to_string
+from django.utils import feedgenerator
 
 
 class StaticPage:
@@ -84,3 +85,76 @@ class ModelPage(StaticPage):
             return model._default_manager.all()
         else:
             raise NuhUh
+
+
+class FeedPage(StaticPage):
+    feed_title = None
+    feed_link = None
+    feed_url = None
+    feed_description = None
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.feed = feedgenerator.Atom1Feed(
+            title = self.get_feed_title(),
+            link = self.get_feed_link(),
+            feed_url = self.get_feed_url(),
+            description = None,
+        )
+
+    def get_feed_title(self):
+        if self.feed_title is not None:
+            return self.feed_title
+        raise NoFeedTitle
+
+    def get_feed_link(self):
+        if self.feed_link is not None:
+            return self.feed_link
+        raise NoFeedLink
+
+    def get_feed_url(self):
+        if self.feed_url is not None:
+            return self.feed_url
+        raise NoFeedUrl
+
+    def get_feed_description(self):
+        if self.feed_description is not None:
+            return self.feed_description
+        if 'feed_description' in kwargs:
+            return kwargs['feed_description']
+        raise NoFeedDescription
+
+    def render_page(self):
+        context = self.get_context()
+        for item in context['feed_items']:
+            self.feed.add_item(
+                    title = item.clothing.name,
+                    author_link = 'https://%s.hasworn.com' % self.wearer.username,
+                    author_name = self.wearer.get_name(),
+                    link = 'https://%s.hasworn.com%s' % (
+                            self.wearer.username,
+                            item.clothing.static_site_url
+                        ),
+                    pubdate = item.day,
+                    updateddate = item.day,
+                    description = '<p>%s wore %s on %s. <img src="%s" alt=""></p>' % (
+                            self.wearer.get_name(),
+                            item.clothing,
+                            item.day,
+                            item.clothing.image.url,
+                        ),
+                )
+
+    def write_file(self, filename):
+        full_filename = path.join(settings.GENERATED_SITES_DIR, filename)
+        directory = path.dirname(full_filename)
+        if not path.exists(directory):
+            makedirs(directory)
+        with open(full_filename, 'w') as handle:
+            print('->', full_filename)
+            self.feed.write(handle, 'utf-8')
+
+    def create_page(self):
+        self.render_page()
+        filename = self.get_filename()
+        self.write_file(filename)
