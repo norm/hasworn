@@ -1,9 +1,10 @@
 from os import makedirs, path
-
+from datetime import datetime, time
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.template.loader import render_to_string
 from django.utils import feedgenerator
+import icalendar
 
 
 class StaticPage:
@@ -158,3 +159,29 @@ class FeedPage(StaticPage):
         self.render_page()
         filename = self.get_filename()
         self.write_file(filename)
+
+
+class CalendarPage(StaticPage):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        title = self.get_feed_name()
+        self.calendar = icalendar.Calendar()
+        self.calendar.add('version', '2.0')
+        self.calendar.add(
+            'prodid',
+            '-//com.hasworn//%s//' % title,
+        )
+        self.calendar.add('summary', title)
+        self.calendar.add('X-WR-CALNAME', title)
+        self.calendar.add('X-WR-CALDESC', title)
+
+    def render_page(self):
+        context = self.get_context()
+        for item in context['feed_items']:
+            event = icalendar.Event()
+            event.add('uid', '%s-%s' % (item.day, item.clothing.slug))
+            event.add('summary', item.clothing.name)
+            event.add('dtstart', item.day)
+            event.add('dtstamp', datetime.combine(item.day, time()))
+            self.calendar.add_component(event)
+        return self.calendar.to_ical().decode('utf-8')

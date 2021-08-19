@@ -1,7 +1,7 @@
 import csv
 from datetime import date
 from django.conf import settings
-from hasworn.pages import ModelPage, StaticPage, FeedPage
+from hasworn.pages import ModelPage, StaticPage, FeedPage, CalendarPage
 import os
 
 
@@ -115,4 +115,17 @@ class WearerAtom(FeedPage):
     def get_context(self):
         context = super().get_context()
         context['feed_items'] = self.wearer.wearings.all()[:20]
+        return context
+
+
+class WearerCalendar(CalendarPage):
+    def get_filename(self):
+        return '%s/index.ics' % self.wearer.username
+
+    def get_feed_name(self):
+        return '%s.hasworn.com' % self.wearer.username
+
+    def get_context(self):
+        context = super().get_context()
+        context['feed_items'] = self.wearer.wearings.all()
         return context
