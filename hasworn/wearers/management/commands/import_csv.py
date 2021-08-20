@@ -1,4 +1,5 @@
 import csv
+from datetime import date
 from django.core.management.base import BaseCommand
 
 from hasworn.wearers.models import Wearer
@@ -29,5 +30,5 @@ class Command(BaseCommand):
                 )
                 wearing = Wearing.objects.get_or_create(
                     worn = worn,
-                    day = row['day'],
+                    day = date.fromisoformat(row['day']),
                 )
