@@ -21,22 +21,33 @@
       <a href='/{{wearings.0.clothing.type}}s/most_recent'>sorted by most recently worn</a>
     {% endif %}
   </li>
+  <li>
+    {% if sort_by == 'first' %}
+      <em>sorted by first worn</em>
+    {% else %}
+      <a href='/{{wearings.0.clothing.type}}s/first_worn'>sorted by first worn</a>
+    {% endif %}
+  </li>
 </ul>
 
 <ol class='clothing large'>
-  {% for wearing in wearings %}
+  {% for worn in wearings %}
     <li>
-      <a href='{{wearing.clothing.static_site_url}}'>
-        {% thumbnail wearing.clothing.image "190x190" crop="center" as thumb %}
+      <a href='{{worn.clothing.static_site_url}}'>
+        {% thumbnail worn.clothing.image "190x190" crop="center" as thumb %}
           <img src='{{thumb.url}}' width=190 height=190 alt=''>
         {% empty %}
           <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=190 height=190 alt=''>
         {% endthumbnail %}
-        <i>{{wearing.clothing.name}}</i>
+        <i>{{worn.clothing.name}}</i>
       </a>
       <i>
-        worn <em>{{wearing.times_worn}}</em>,
-        most recently <em>{{wearing.last_worn_days_ago}}</em>
+        worn <em>{{worn.times_worn}}</em>,
+        {% if sort_by == 'first' %}
+          first on<br> <em>{{worn.days_worn.last.day|date:"jS F, Y"}}</em>
+        {% else %}
+          most recently <em>{{worn.last_worn_days_ago}}</em>
+        {% endif %}
       </i>
     </li>
   {% endfor %}

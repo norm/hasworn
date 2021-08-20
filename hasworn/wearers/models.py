@@ -10,6 +10,7 @@ from .pages import (
     WearerYear,
     WearerTypeIndex,
     WearerMostRecentlyWorn,
+    WearerFirstWorn,
     WearerCSV,
     WearerAtom,
     WearerCalendar,
@@ -122,6 +123,7 @@ class Wearer(AbstractUser):
             WearerYear(wearer=self, year=year).create()
         WearerTypeIndex(wearer=self).create()
         WearerMostRecentlyWorn(wearer=self).create()
+        WearerFirstWorn(wearer=self).create()
         WearerCSV(wearer=self).create()
         WearerAtom(wearer=self).create()
         WearerCalendar(wearer=self).create()

@@ -71,6 +71,24 @@ class WearerMostRecentlyWorn(StaticPage):
         return context
 
 
+class WearerFirstWorn(StaticPage):
+    template = 'wearers/wearer_type_index.html'
+
+    def get_filename(self):
+        return "%s/%s/first_worn.html" % (self.wearer.username, 'tshirts')
+
+    def get_context(self, **kwargs):
+        context = super().get_context(**kwargs)
+        worn_set = self.wearer.worn_set.all()
+        context['sort_by'] = 'first'
+        context['wearings'] = sorted(
+                worn_set,
+                key=lambda worn: worn.days_worn.last().day,
+                reverse=True,
+            )
+        return context
+
+
 class WearerCSV(StaticPage):
     def get_filename(self):
         return '%s/index.csv' % self.wearer.username
