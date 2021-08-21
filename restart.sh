@@ -8,7 +8,7 @@ IP_ADDRESS='{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 function main {
     fetch_docker_image
     migrate_database
-    collect_static_files
+    update_static_files
     start_new_image
     remove_old_image
     prune_docker
@@ -30,9 +30,12 @@ function migrate_database {
         python manage.py migrate --noinput
 }
 
-function collect_static_files {
+function update_static_files {
     run_compose run --rm -T app \
         python manage.py collectstatic --noinput
+
+    run_compose run --rm -T app \
+        python manage.py generate_apex
 }
 
 function start_new_image {

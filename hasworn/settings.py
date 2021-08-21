@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'storages',
     'sorl.thumbnail',
 
+    'hasworn.apex',
     'hasworn.wearers',
     'hasworn.clothing',
 ]

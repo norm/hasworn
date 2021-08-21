@@ -405,6 +405,7 @@ body.not-found {
         @include width_below(610px) { font-size: 1.2em; }
 
         img {
+            outline: 1px solid #9f3052;
             max-width: 60%;
             height: auto;
             float: right;
@@ -415,5 +416,43 @@ body.not-found {
 
     h2 {
         clear: both;
+    }
+}
+
+body.apex {
+    header {
+        h1 {
+            color: #9f3052;
+            font-size: 6em;
+            @include width_below(820px) { font-size: 5em; }
+            @include width_below(660px) { font-size: 4em; }
+            @include width_below(490px) { font-size: 3em; }
+        }
+
+        p {
+            font-weight: 900;
+            margin-top: 0;
+        }
+    }
+
+    #body p:first-child {
+        font-size: 1.6em;
+        padding: 0 2em;
+        @include width_below(610px) { font-size: 1.2em; }
+
+        img {
+            outline: 1px solid #9f3052;
+            max-width: 60%;
+            height: auto;
+            float: right;
+            margin-left: 1em;
+            margin-bottom: 1em;
+        }
+    }
+    #body p + p {
+        // clear: both;
+        // padding-top: 1em;
+        font-size: 1.6em;
+        padding: 0 2em;
     }
 }

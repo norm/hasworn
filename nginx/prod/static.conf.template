@@ -12,12 +12,27 @@ server {
 
 server {
     listen          8081 ssl;
+    server_name     hasworn.com;
+    root            /baked;
 
     ssl_certificate     /etc/letsencrypt/certificates/hasworn.com.crt;
     ssl_certificate_key /etc/letsencrypt/certificates/hasworn.com.key;
 
+    location = / {
+        try_files /index.html =404;
+    }
+    location   / {
+        return 301 https://hasworn.com/;
+    }
+}
+
+server {
+    listen          8081 ssl;
     server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
     root            /baked/$1;
+
+    ssl_certificate     /etc/letsencrypt/certificates/hasworn.com.crt;
+    ssl_certificate_key /etc/letsencrypt/certificates/hasworn.com.key;
 
     error_page 404 = /404;
 
