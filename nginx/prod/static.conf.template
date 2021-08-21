@@ -19,6 +19,8 @@ server {
     server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
     root            /baked/$1;
 
+    error_page 404 = /404;
+
     location = /index.atom {}
     location = /index.csv  {}
     location = /index.ics  {}

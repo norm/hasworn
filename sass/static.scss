@@ -269,7 +269,10 @@ ol.clothing {
             @include width_below(490px) { font-size: 14px; bottom: 26px; }
             @include width_below(400px) { font-size: 12px; bottom: 24px; }
         }
+    }
 
+    &.large.statless > li a i {
+        bottom: 5px;
     }
 }
 
@@ -387,5 +390,30 @@ body.clothing {
             li { font-size: 14px; }
             li.last { font-size: 15px; }
         }
+    }
+}
+
+body.not-found {
+    #body h1 {
+        font-size: 3em;
+        text-align: center;
+    }
+
+    #body h1 + p {
+        font-size: 1.6em;
+        padding: 0 2em;
+        @include width_below(610px) { font-size: 1.2em; }
+
+        img {
+            max-width: 60%;
+            height: auto;
+            float: right;
+            margin-left: 1em;
+            margin-bottom: 1em;
+        }
+    }
+
+    h2 {
+        clear: both;
     }
 }

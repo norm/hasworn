@@ -147,3 +147,15 @@ class WearerCalendar(CalendarPage):
         context = super().get_context()
         context['feed_items'] = self.wearer.wearings.all()
         return context
+
+
+class WearerNotFoundPage(StaticPage):
+    template = 'wearers/wearer_404.html'
+
+    def get_filename(self):
+        return '%s/404.html' % self.wearer.username
+
+    def get_context(self):
+        context = super().get_context()
+        context['random_wearings'] = self.wearer.has_worn.order_by('?')
+        return context

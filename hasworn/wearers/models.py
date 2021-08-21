@@ -14,6 +14,7 @@ from .pages import (
     WearerCSV,
     WearerAtom,
     WearerCalendar,
+    WearerNotFoundPage,
 )
 
 
@@ -110,17 +111,15 @@ class Wearer(AbstractUser):
 
     def generate_wearer_site_deleted(self, worn, year):
         WearerWornPage(wearer=self, pk=worn).create()
-        WearerTypeIndex(wearer=self).create()
         WearerYear(wearer=self, year=year).create()
-        WearerPage(wearer=self).create()
-        WearerCSV(wearer=self).create()
-        WearerAtom(wearer=self).create()
+        self.generate_wearer_site(all=False)
 
-    def generate_wearer_site(self):
-        for worn in self.has_worn.all():
-            WearerWornPage(wearer=self, pk=worn.pk).create()
-        for year in self.years_active():
-            WearerYear(wearer=self, year=year).create()
+    def generate_wearer_site(self, all=True):
+        if all:
+            for worn in self.has_worn.all():
+                WearerWornPage(wearer=self, pk=worn.pk).create()
+            for year in self.years_active():
+                WearerYear(wearer=self, year=year).create()
         WearerTypeIndex(wearer=self).create()
         WearerMostRecentlyWorn(wearer=self).create()
         WearerFirstWorn(wearer=self).create()
@@ -128,3 +127,4 @@ class Wearer(AbstractUser):
         WearerAtom(wearer=self).create()
         WearerCalendar(wearer=self).create()
         WearerPage(wearer=self).create()
+        WearerNotFoundPage(wearer=self).create()

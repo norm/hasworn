@@ -1,0 +1,34 @@
+{% extends "wearers/base.html" %}
+{% load thumbnail %}
+
+{% block body-class %}not-found{% endblock %}
+
+{% block content %}
+<h1>
+  404 Not Found
+</h1>
+
+<p>
+  <img src='//hasworn.m17s.net/placeholder/tshirt.jpg' width=420 height=420 alt=''>
+  That page doesn’t appear to exist. Sorry about that.
+  If you’ve found it by following a link in this site, you can shout at 
+  <a href='https://twitter.com/cackhanded'>@cackhanded</a>.
+  It might make you feel better.
+</p>
+
+<h2>A selection of {{wearer.username}}'s tshirts</h2>
+<ol class='clothing large statless'>
+  {% for clothing in random_wearings|slice:":8" %}
+    <li>
+      <a href='{{clothing.static_site_url}}'>
+        {% thumbnail clothing.image "100x100" crop="center" as thumb %}
+          <img src='{{thumb.url}}' width=100 height=100 alt=''>
+        {% empty %}
+          <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+        {% endthumbnail %}
+        <i>{{clothing.name}}</i>
+      </a>
+    </li>
+  {% endfor %}
+</ol>
+{% endblock %}
