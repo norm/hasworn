@@ -6,6 +6,7 @@ IP_ADDRESS='{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 
 
 function main {
+    update_env_file
     fetch_docker_image
     migrate_database
     update_static_files
@@ -19,6 +20,10 @@ function run_compose {
         -f docker-compose.yml \
         -f docker-compose-prod.yml \
             "$@"
+}
+
+function update_env_file {
+    echo COMMIT_SHA=$COMMIT_SHA > environ.commit
 }
 
 function fetch_docker_image {

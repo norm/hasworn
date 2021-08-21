@@ -9,6 +9,7 @@ services:
     command: gunicorn hasworn.wsgi:application --bind 0.0.0.0:8000
     env_file:
       - environ.production
+      - environ.commit
     logging:
       driver: journald
     volumes:
