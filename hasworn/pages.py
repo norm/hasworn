@@ -128,6 +128,14 @@ class FeedPage(StaticPage):
     def render_page(self):
         context = self.get_context()
         for item in context['feed_items']:
+            description = '<p>%s wore %s on %s.' % (
+                    self.wearer.get_name(),
+                    item.clothing,
+                    item.day,
+                )
+            if item.clothing.image:
+                description += '<img src="%s" alt="">' % item.clothing.image.url
+            description += '</p>'
             self.feed.add_item(
                     title = item.clothing.name,
                     author_link = 'https://%s.hasworn.com' % self.wearer.username,
@@ -138,12 +146,7 @@ class FeedPage(StaticPage):
                         ),
                     pubdate = item.day,
                     updateddate = item.day,
-                    description = '<p>%s wore %s on %s. <img src="%s" alt=""></p>' % (
-                            self.wearer.get_name(),
-                            item.clothing,
-                            item.day,
-                            item.clothing.image.url,
-                        ),
+                    description = description,
                 )
 
     def write_file(self, filename):

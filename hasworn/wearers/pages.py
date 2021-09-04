@@ -109,7 +109,7 @@ class WearerCSV(StaticPage):
             print('->', full_filename)
             writer = csv.DictWriter(
                 handle,
-                fieldnames=['day','wearer','type','slug','name'],
+                fieldnames=['day','wearer','type','slug','name', 'image'],
             )
             writer.writeheader()
 
@@ -117,13 +117,16 @@ class WearerCSV(StaticPage):
                     'worn__clothing'
                 ).order_by('day')
             for wearing in wearings:
-                writer.writerow({
+                row = {
                     'day': wearing.day,
                     'wearer': self.wearer,
                     'type': wearing.clothing.type,
                     'slug': wearing.clothing.slug,
                     'name': wearing.clothing.name,
-                })
+                }
+                if wearing.clothing.image:
+                    row['image'] = wearing.clothing.image.url
+                writer.writerow(row)
 
 
 class WearerAtom(FeedPage):
