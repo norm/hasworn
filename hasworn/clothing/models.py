@@ -117,6 +117,10 @@ class Worn(models.Model):
         return self.days_worn.first()
 
     @property
+    def first_worn(self):
+        return self.days_worn.last()
+
+    @property
     def times_worn(self):
         times = self.days_worn.count()
         if times == 0:

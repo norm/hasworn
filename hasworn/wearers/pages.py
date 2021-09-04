@@ -35,8 +35,17 @@ class WearerYear(StaticPage):
                 day__gte=date(self.year, 1, 1),
                 day__lte=date(self.year, 12, 31)
             ).order_by('day')
-        context['distinct_wearings'] = \
-            context['wearings'].values('worn').distinct()
+        context['distinct_wearings'] = set()
+        context['new_wearings'] = set()
+        for wearing in context['wearings']:
+            context['distinct_wearings'].add(wearing.worn.pk)
+            this_year = (
+                    wearing.worn.first_worn.day >= date(self.year, 1, 1)
+                    and
+                    wearing.worn.first_worn.day <= date(self.year, 12, 31)
+                )
+            if this_year:
+                context['new_wearings'].add(wearing.pk)
         return context
 
 
