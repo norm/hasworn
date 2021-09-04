@@ -38,7 +38,17 @@
         {% empty %}
           <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
         {% endthumbnail %}
-        {% if wearing.pk in new_wearings %}<i>First time</i>{% endif %}
+        <i>
+          {% if wearing.pk in new_wearings %}
+            {% if wearing.day == wearing.worn.last_worn.day %}
+              First and last worn
+            {% else %}
+              First worn
+            {% endif %}
+          {% elif wearing.day == wearing.worn.last_worn.day %}
+            Last worn
+          {% endif %}
+        </i>
       </a>
       <i><b>{{wearing.day|date:"F"}}</b> {{wearing.day|date:"jS"}}</i>
     </li>
