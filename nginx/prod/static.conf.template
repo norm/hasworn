@@ -31,6 +31,10 @@ server {
     server_name     ~^([a-z][a-z0-9-]+)\.hasworn\.com$ ;
     root            /baked/$1;
 
+    if (!-d "/baked/$1") {
+        return 301 https://hasworn.com/;
+    }
+
     ssl_certificate     /etc/letsencrypt/certificates/hasworn.com.crt;
     ssl_certificate_key /etc/letsencrypt/certificates/hasworn.com.key;
 
