@@ -11,6 +11,7 @@ function main {
     migrate_database
     update_static_files
     start_new_image
+    restart_celery
     remove_old_image
     prune_docker
 }
@@ -71,6 +72,10 @@ function remove_old_image {
     scale_app 1
 
     reload_nginx
+}
+
+function restart_celery {
+    run_compose restart celery
 }
 
 function prune_docker {
