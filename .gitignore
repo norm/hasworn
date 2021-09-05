@@ -9,6 +9,7 @@
 
 # project files
 __pycache__/
+environ.commit
 environ.production
 letsencrypt/
 

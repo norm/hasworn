@@ -46,6 +46,9 @@ jobs:
       - name: Inspect the build image
         run: docker image inspect hasworn:latest
 
+      - name: Create environ.commit
+        run: echo COMMIT_SHA=${GITHUB_SHA::8} > environ.commit
+
       - name: Bring up the stack
         run: docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
 

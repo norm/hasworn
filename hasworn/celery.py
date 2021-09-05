@@ -2,6 +2,7 @@ import os
 
 from celery import Celery
 from celery.schedules import crontab
+from celery.signals import worker_ready
 
 
 # Set the default Django settings module for the 'celery' program.
@@ -30,3 +31,9 @@ app.conf.beat_schedule = {
         'schedule': crontab(hour=4, minute=1),
     },
 }
+
+
+@worker_ready.connect
+def at_start(sender, **k):
+    from django.conf import settings
+    print(f'running with checkout {settings.COMMIT_SHA}')

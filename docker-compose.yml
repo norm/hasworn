@@ -7,6 +7,7 @@ services:
       - 8000
     env_file:
       - environ
+      - environ.commit
     depends_on:
       - db
     volumes:
@@ -16,6 +17,7 @@ services:
     image: hasworn:latest
     env_file:
       - environ
+      - environ.commit
     command: celery --app hasworn worker --concurrency 4 --loglevel info
     depends_on:
       - redis

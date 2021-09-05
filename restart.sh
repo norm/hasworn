@@ -11,7 +11,7 @@ function main {
     migrate_database
     update_static_files
     start_new_image
-    restart_celery
+    recreate_celery
     remove_old_image
     prune_docker
     regenerate_apex
@@ -77,8 +77,8 @@ function remove_old_image {
     reload_nginx
 }
 
-function restart_celery {
-    run_compose restart celery
+function recreate_celery {
+    run_compose up -d --no-deps celery celery_beat
 }
 
 function prune_docker {
