@@ -12,6 +12,14 @@ services:
     volumes:
       - static:/static
 
+  celery:
+    image: hasworn:latest
+    env_file:
+      - environ
+    command: celery --app hasworn worker --concurrency 4 --loglevel info
+    depends_on:
+      - redis
+
   nginx:
     image: nginx:1.21.1
     depends_on:
@@ -28,6 +36,9 @@ services:
       - POSTGRES_USER=hasworn
       - POSTGRES_PASSWORD=hasworn
       - POSTGRES_DB=hasworn
+
+  redis:
+    image: redis:6.2.5-alpine
 
 volumes:
   postgres_data:

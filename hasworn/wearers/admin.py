@@ -45,10 +45,12 @@ class WearerAdmin(UserAdmin):
                 'fields': (
                     'last_login',
                     'date_joined',
+                    'last_update',
                 ),
             }
         ),
     )
+    readonly_fields=('last_update',)
     list_display = (
         'username',
         'name',

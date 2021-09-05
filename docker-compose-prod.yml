@@ -15,6 +15,17 @@ services:
     volumes:
       - baked:/baked
 
+  celery:
+    restart: unless-stopped
+    image: ghcr.io/norm/hasworn:sha-$COMMIT_SHA
+    env_file:
+      - environ.production
+      - environ.commit
+    logging:
+      driver: journald
+    volumes:
+      - baked:/baked
+
   nginx:
     restart: unless-stopped
     ports:
@@ -25,4 +36,7 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 
   db:
+    restart: unless-stopped
+
+  redis:
     restart: unless-stopped

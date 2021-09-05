@@ -17,6 +17,8 @@ from .pages import (
     WearerNotFoundPage,
 )
 
+FIVE_MINUTES = ( 60 * 5 )
+
 
 class Wearer(AbstractUser):
     username = models.CharField(
@@ -51,6 +53,9 @@ class Wearer(AbstractUser):
         blank = True,
         null = True,
     )
+    last_update = models.DateTimeField(
+        auto_now = True,
+    )
 
     USERNAME_FIELD = 'username'
 
@@ -77,6 +82,7 @@ class Wearer(AbstractUser):
     @property
     def wearings(self):
         from hasworn.clothing.models import Wearing
+
         return Wearing.objects.filter(worn__wearer=self)
 
     def most_worn(self):
@@ -106,20 +112,38 @@ class Wearer(AbstractUser):
     def years_active(self):
         return [ year.year for year in self.wearings.dates('day', 'year') ]
 
-    def generate_wearer_site_wearing(self, wearing):
-        self.generate_wearer_site_deleted(wearing.worn.pk, wearing.day.year)
+    def get_last_update(self):
+        """ last_update in a form for comparison after JSON serialization """
+        return str(self.last_update.replace(microsecond=0))
 
-    def generate_wearer_site_deleted(self, worn, year):
-        WearerWornPage(wearer=self, pk=worn).create()
-        WearerYear(wearer=self, year=year).create()
-        self.generate_wearer_site(all=False)
+    def added_wearing(self, wearing):
+        self.update_site_from_wearing(wearing.worn.pk, wearing.day.year)
 
-    def generate_wearer_site(self, all=True):
-        if all:
-            for worn in self.has_worn.all():
-                WearerWornPage(wearer=self, pk=worn.pk).create()
-            for year in self.years_active():
-                WearerYear(wearer=self, year=year).create()
+    def deleted_wearing(self, worn, year):
+        self.update_site_from_wearing(worn, year)
+
+    def update_site_from_wearing(self, worn, year):
+        from .tasks import (
+            rebuild_full_wearer_site,
+            quick_rebuild_of_worn,
+        )
+
+        self.register_update()
+        quick_rebuild_of_worn.delay(self.pk, worn, year)
+        rebuild_full_wearer_site.apply_async(
+            args = [self.pk, self.get_last_update()],
+            countdown = FIVE_MINUTES,
+        )
+
+    def register_update(self):
+        # last_update is auto, just save self
+        self.save()
+
+    def generate_wearer_site(self):
+        for worn in self.has_worn.all():
+            WearerWornPage(wearer=self, pk=worn.pk).create()
+        for year in self.years_active():
+            WearerYear(wearer=self, year=year).create()
         WearerTypeIndex(wearer=self).create()
         WearerMostRecentlyWorn(wearer=self).create()
         WearerFirstWorn(wearer=self).create()
@@ -128,3 +152,8 @@ class Wearer(AbstractUser):
         WearerCalendar(wearer=self).create()
         WearerPage(wearer=self).create()
         WearerNotFoundPage(wearer=self).create()
+
+    def generate_wearer_site_worn(self, worn_pk, year):
+        WearerWornPage(wearer=self, pk=worn_pk).create()
+        WearerYear(wearer=self, year=year).create()
+        WearerPage(wearer=self).create()

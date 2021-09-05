@@ -11,6 +11,13 @@ services:
       - DEBUG=1
       - SECRET_KEY=django-insecure-2c1-f@&vqyh*(eiz4+pyfiuxihuiesg39uz-y=vczx95yrqx%1
 
+  celery:
+    environment:
+      - SECRET_KEY=django-insecure-2c1-f@&vqyh*(eiz4+pyfiuxihuiesg39uz-y=vczx95yrqx%1
+    volumes:
+      - .:/app
+      - ./baked:/baked
+
   nginx:
     ports:
       - 8000:8080

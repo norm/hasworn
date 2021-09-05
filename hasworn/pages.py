@@ -46,6 +46,7 @@ class StaticPage:
         if not path.exists(directory):
             makedirs(directory)
         with open(full_filename, 'w') as handle:
+            print(f'>> {full_filename}')
             handle.write(content)
 
     def create_page(self):
@@ -155,7 +156,7 @@ class FeedPage(StaticPage):
         if not path.exists(directory):
             makedirs(directory)
         with open(full_filename, 'w') as handle:
-            print('->', full_filename)
+            print(f'>> {full_filename}')
             self.feed.write(handle, 'utf-8')
 
     def create_page(self):

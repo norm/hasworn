@@ -106,7 +106,7 @@ class WearerCSV(StaticPage):
         filename = self.get_filename()
         full_filename = os.path.join(settings.GENERATED_SITES_DIR, filename)
         with open(full_filename, 'w') as handle:
-            print('->', full_filename)
+            print(f'>> {full_filename}')
             writer = csv.DictWriter(
                 handle,
                 fieldnames=['day','wearer','type','slug','name', 'image'],

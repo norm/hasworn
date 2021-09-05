@@ -10,7 +10,7 @@ class CreateWearing(CreateView):
     fields = ('day', 'worn')
 
     def get_success_url(self):
-        self.request.user.generate_wearer_site_wearing(self.object)
+        self.request.user.added_wearing(self.object)
         return '/'
 
 
@@ -22,7 +22,7 @@ class DeleteWearing(DeleteView):
         year = self.object.day.year
         worn_pk = self.object.worn.pk
         self.object.delete()
-        self.request.user.generate_wearer_site_deleted(worn_pk, year)
+        self.request.user.deleted_wearing(worn_pk, year)
         return HttpResponseRedirect('/')
 
 
@@ -34,6 +34,7 @@ class CreateClothing(CreateView):
         """If the form is valid, save the associated model."""
         self.object = form.save()
         self.object.created_by = self.request.user
+        self.object.save()
         if 'wearing' in self.get_form_kwargs()['data']:
             worn = Worn.objects.create(
                 clothing = self.object,
@@ -43,7 +44,7 @@ class CreateClothing(CreateView):
                 worn = worn,
                 day = date.today(),
             )
-        self.object.save()
+            self.request.user.added_wearing(wearing)
         return super().form_valid(form)
 
     def get_success_url(self):

@@ -184,6 +184,11 @@ else:
     MEDIA_URL = 'http://i.hasworn.test:8000/media/'
     MEDIA_ROOT = '/static/media'
 
+
+# Celery configuration
+CELERY_BROKER_URL = 'redis://redis:6379/1'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

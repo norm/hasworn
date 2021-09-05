@@ -9,3 +9,5 @@ pytest-django==4.4.0
 libsass==0.21.0
 awscli==1.20.20
 icalendar==4.0.7
+celery==5.1.2
+redis==3.5.3
