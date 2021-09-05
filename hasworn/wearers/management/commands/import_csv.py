@@ -37,3 +37,4 @@ class Command(BaseCommand):
                     worn = worn,
                     day = date.fromisoformat(row['day']),
                 )
+        wearer.generate_wearer_site()

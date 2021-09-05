@@ -22,7 +22,6 @@ Running in development:
 To test a generated hasworn site:
 
     ./manage import_csv sample/norm.csv
-    ./manage generate_site norm
 
 To preview the generated site:
 
