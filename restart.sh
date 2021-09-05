@@ -14,6 +14,7 @@ function main {
     restart_celery
     remove_old_image
     prune_docker
+    regenerate_apex
 }
 
 function run_compose {
@@ -39,7 +40,9 @@ function migrate_database {
 function update_static_files {
     run_compose run --rm -T app \
         python manage.py collectstatic --noinput
+}
 
+function regenerate_apex {
     run_compose run --rm -T app \
         python manage.py generate_apex
 }
