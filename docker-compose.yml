@@ -20,6 +20,18 @@ services:
     depends_on:
       - redis
 
+  celery_beat:
+    image: hasworn:latest
+    env_file:
+      - environ
+      - environ.commit
+    command: celery --app hasworn beat --schedule /static/beat.db
+    volumes:
+      - static:/static
+    depends_on:
+      - celery
+      - redis
+
   nginx:
     image: nginx:1.21.1
     depends_on:

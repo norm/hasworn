@@ -26,6 +26,12 @@ services:
     volumes:
       - baked:/baked
 
+  celery_beat:
+    restart: unless-stopped
+    image: ghcr.io/norm/hasworn:sha-$COMMIT_SHA
+    env_file:
+      - environ.production
+
   nginx:
     restart: unless-stopped
     ports:

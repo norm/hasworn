@@ -1,6 +1,8 @@
 import os
 
 from celery import Celery
+from celery.schedules import crontab
+
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hasworn.settings')
@@ -20,3 +22,11 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
+
+
+app.conf.beat_schedule = {
+    'rebuild-wearer-sites-daily': {
+        'task': 'hasworn.wearers.tasks.rebuild_all_wearer_sites',
+        'schedule': crontab(hour=4, minute=1),
+    },
+}
