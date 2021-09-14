@@ -4,6 +4,13 @@ hasworn
 A place to collection my tshirt wearing history.
 
 
+## Pre-requisites for working locally
+
+* docker and docker-compose: brew install --cask docker --or-- brew install docker docker-compose
+* flask: pip install flask
+* libsass: pip install libsass
+* entr: brew install entr
+
 
 ## Generated static sites
 
@@ -11,6 +18,7 @@ Running in development:
 
     # bring up the stack
     export HASWORN_ENV=dev
+    ./compose build
     ./start
 
     # if this is a new checkout, or volumes have been removed
@@ -25,8 +33,12 @@ To test a generated hasworn site:
 
 To preview the generated site:
 
-    # needs flask, one time run: pip install flask
+    ./update_css
     python static.py
+
+To automatically remake the CSS when developing it:
+
+    find sass -type f | entr -d ./update_css
 
 When done developing:
 
