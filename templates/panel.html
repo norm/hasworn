@@ -8,11 +8,15 @@
     <p>{{wearing.clothing}}</p>
   {% endfor %}
 {% else %}
+  <p>
+    To wear something today, select from <a href='/all/'>all previously
+    worn</a>, or fill out this form.
+  </p>
   <form method='post' action='{% url "create-wearing" %}'>
     {% csrf_token %}
     <input type='hidden' name='day' value='{% now "Y-m-d" %}'>
     <fieldset>
-      <legend>Wearing today</legend>
+      <legend>Wear</legend>
       <label for='tshirt'>Tshirt</label>
       <select id='tshirt' name='worn'>
         {% for worn in request.user.worn_set.all %}

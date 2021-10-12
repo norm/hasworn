@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import views, logout
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
@@ -6,12 +7,34 @@ from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
 
-class Home(TemplateView):
+class WearerContext:
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['wearer'] = self.request.user
+        context['COMMIT_SHA'] = settings.COMMIT_SHA
+        return context
+
+
+class Home(WearerContext, TemplateView):
     def get_template_names(self):
         if self.request.user.is_authenticated:
             return ['panel.html']
         else:
             return ['login.html']
+
+
+class All(WearerContext, TemplateView):
+    template_name='all.html'
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        worn_set = self.request.user.worn_set.all()
+        context['wearings'] = sorted(
+                worn_set,
+                key=lambda worn: worn.days_worn.first().day,
+                reverse=True,
+            )
+        return context
 
 
 class Login(views.LoginView):

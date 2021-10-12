@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from hasworn.views import Home, Login, Logout
+from hasworn.views import Home, All, Login, Logout
 from hasworn.clothing.views import CreateWearing, DeleteWearing, CreateClothing
 
 
@@ -31,6 +31,12 @@ urlpatterns = [
         Home.as_view(),
         name = 'homepage'
     ),
+    path(
+        'all/',
+        All.as_view(),
+        name = 'all-clothing',
+    ),
+
     path(
         'wearing/',
         CreateWearing.as_view(),
