@@ -25,6 +25,15 @@ a {
     color: #9f3052;
 }
 
+button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+}
+
 h1, h2, h3 {
     font-family: "Raleway", sans-serif;
     font-weight: 900;
@@ -65,11 +74,20 @@ header {
         @include width_below(400px) { font-size: 1.4em; }
     }
 
+    form,
     p {
         font-family: "Raleway", sans-serif;
         font-size: 1.2em;
         line-height: 1.2;
         margin: 1em 0;
+    }
+
+    form button {
+        color: #9f3052;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 1px;
+        background: transparent;
     }
 }
 
@@ -155,6 +173,7 @@ ol.clothing {
                 border-top: 3px solid #d9d9d9;
             }
         }
+
     }
 
     // provides text on top of images

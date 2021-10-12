@@ -1,9 +1,40 @@
 <html>
 <head>
-
+  <meta charset="utf8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  {% block meta_atomfeed %}{% endblock %}
+  {% include 'wearers/styles.html' %}
+  {% block page-style %}{% endblock %}
 </head>
-<body>
+<body class='{% block body-class %}{% endblock %}'>
+{% block header %}
+  <header>
+    <h1>
+      {% block header_site %}i.hasworn.com{% endblock %}
+    </h1>
+    {% block header_user_nav %}
+      <form method='post' action='{% url "logout" %}'>
+        {% csrf_token %}
+        Logged in as <strong>{{request.user}}</strong>
+        • <button type='submit'>logout</button>
+        {% if request.user.is_superuser %}
+          • <a href='{% url "admin:index" %}'>django admin</a>
+        {% endif %}
+      </form>
+    {% endblock %}
+  </header>
+{% endblock %}
+<div id='body'>
 {% block content %}
 {% endblock %}
+
+{% block footer %}
+  <footer>
+    <em>hasworn.com</em> — a project by 
+    <a href='https://marknormanfrancis.com/'>Mark Norman Francis</a>.
+    Source on <a href='https://github.com/norm/hasworn/'>GitHub</a>, this is version <a href='https://github.com/norm/hasworn/commit/{{COMMIT_SHA}}'>{{COMMIT_SHA}}</a>.
+  </footer>
+{% endblock %}
+</div>
 </body>
 </html>

@@ -2,17 +2,6 @@
 
 {% block content %}
 
-<p>
-  Logged in as: <em>{{request.user}}</em>
-  {% if request.user.is_superuser %}
-    <a href='{% url "admin:index" %}'>admin</a>
-  {% endif %}
-</p>
-<form method='post' action='{% url "logout" %}'>
-  {% csrf_token %}
-  <input type='submit' value='Logout'>
-</form>
-
 <h2>Today ({% now 'Y-m-d' %})</h2>
 {% if request.user.wearing_today %}
   {% for wearing in request.user.wearing_today %}

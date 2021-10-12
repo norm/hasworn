@@ -1,47 +1,29 @@
-<html>
-<head>
-  <meta charset="utf8">
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
+{% extends "base_template.html" %}
+
+{% block meta_atomfeed %}
   <link rel='alternate' type='application/atom+xml' title='What {{wearer.get_name}} has worn' href='/index.atom'>
-  {% include 'wearers/styles.html' %}
-  {% block page-style %}{% endblock %}
-</head>
-<body class='{% block body-class %}{% endblock %}'>
-{% block header %}
-  <header>
-    <h1>
-      <a href='/' class='wearer'>{{wearer}}</a><wbr>.<a
-         href='https://hasworn.com/' class='hasworn'>hasworn.com</a>
-    </h1>
-    <p>
-      <a href='/'>{{wearer.get_name}}</a> has worn
-      <a href='/tshirts/'>{{wearer.has_worn.count}} different tshirts</a>
-      {{wearer.wearings.count}} times, across
-      {% for year in wearer.years_active %}
-        {% if forloop.last %}
-          {% if not forloop.first %} and {% endif %}
-          <a href='/{{year}}/'>{{year}}</a>.
-        {% else %}
-          <a href='/{{year}}/'>{{year}}</a>,
-        {% endif %}
-      {% endfor %}
-      All wearings available as an
-        <a href='/index.atom'>Atom feed</a> or
-        <a href='/index.ics'>calendar</a>.
-    </p>
-  </header>
-{% endblock %}
-<div id='body'>
-{% block content %}
 {% endblock %}
 
-{% block footer %}
-  <footer>
-    <em>hasworn.com</em> — a project by 
-    <a href='https://marknormanfrancis.com/'>Mark Norman Francis</a>.
-    Source on <a href='https://github.com/norm/hasworn/'>GitHub</a>, this is version <a href='https://github.com/norm/hasworn/commit/{{COMMIT_SHA}}'>{{COMMIT_SHA}}</a>.
-  </footer>
+{% block header_site %}
+  <a href='/' class='wearer'>{{wearer}}</a><wbr>.<a
+     href='https://hasworn.com/' class='hasworn'>hasworn.com</a>
 {% endblock %}
-</div>
-</body>
-</html>
+
+{% block header_user_nav %}
+  <p>
+    <a href='/'>{{wearer.get_name}}</a> has worn
+    <a href='/tshirts/'>{{wearer.has_worn.count}} different tshirts</a>
+    {{wearer.wearings.count}} times, across
+    {% for year in wearer.years_active %}
+      {% if forloop.last %}
+        {% if not forloop.first %} and {% endif %}
+        <a href='/{{year}}/'>{{year}}</a>.
+      {% else %}
+        <a href='/{{year}}/'>{{year}}</a>,
+      {% endif %}
+    {% endfor %}
+    All wearings available as an
+      <a href='/index.atom'>Atom feed</a> or
+      <a href='/index.ics'>calendar</a>.
+  </p>
+{% endblock %}

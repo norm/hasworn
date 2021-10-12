@@ -1,23 +1,16 @@
-<html>
-<head>
-  <meta charset="utf8">
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  {% include 'wearers/styles.html' %}
-</head>
-<body class='apex'>
+{% extends "base_template.html" %}
 
-<header>
-  <h1>
-    hasworn.com
-  </h1>
-  <p>
-    A <a href='https://marknormanfrancis.com/'>Mark Norman Francis</a>
-    project.
-  </p>
-</header>
+{% block header %}
+  <header>
+    <h1>hasworn.com</h1>
+    <p>
+      A <a href='https://marknormanfrancis.com/'>Mark Norman Francis</a>
+      project.
+    </p>
+  </header>
+{% endblock %}
 
-<div id='body'>
-
+{% block content %}
   <p>
     <img src='//hasworn.m17s.net/placeholder/tshirt.jpg' width=420 height=420 alt=''>
     A site for obsessively tracking what clothing you wear on a daily
@@ -33,14 +26,4 @@
     of what it would look like if you had tracked what tshirt you wore
     for nearly a decade.
   </p>
-
-  <footer>
-    <em>hasworn.com</em> — source on 
-    <a href='https://github.com/norm/hasworn/'>GitHub</a>,
-    this is version
-    <a href='https://github.com/norm/hasworn/commit/{{COMMIT_SHA}}'>{{COMMIT_SHA}}</a>.
-  </footer>
-
-</div>
-</body>
-</html>
+{% endblock %}
