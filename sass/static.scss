@@ -178,6 +178,17 @@ ol.clothing {
             outline: 1px solid #9f3052;
             margin: 0;
         }
+        form.unwear {
+            position: absolute;
+            bottom: 0px;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+
+            button {
+                display: block;
+            }
+        }
     }
 
     // provides text on top of images
@@ -225,6 +236,7 @@ ol.clothing {
                                   grid-template-columns: 1fr 1fr 1fr 1fr; }
 
     > li,
+    > li form,
     > li img {
         width: 100px;
         @include width_below(660px) { width: 90px; }
