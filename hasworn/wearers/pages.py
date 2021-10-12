@@ -45,7 +45,7 @@ class WearerYear(StaticPage):
                     wearing.worn.first_worn.day <= date(self.year, 12, 31)
                 )
             if this_year:
-                context['new_wearings'].add(wearing.pk)
+                context['new_wearings'].add(wearing.worn.pk)
         return context
 
 
