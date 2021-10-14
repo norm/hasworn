@@ -309,6 +309,31 @@ ol.clothing {
     &.large.statless > li a i {
         bottom: 5px;
     }
+
+    &.detailed {
+        grid-template-columns: 1fr;
+
+        figure {
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        > li {
+            width: 100%;
+
+            figure {
+                width: 190px;
+                float: left;
+                margin-right: 20px;
+
+                img {
+                    width: 190px;
+                }
+            }
+
+        }
+    }
 }
 
 body.year {
