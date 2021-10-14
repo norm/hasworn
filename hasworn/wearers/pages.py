@@ -37,6 +37,7 @@ class WearerYear(StaticPage):
             ).order_by('day')
         context['distinct_wearings'] = set()
         context['new_wearings'] = set()
+        context['last_wearings'] = set()
         for wearing in context['wearings']:
             context['distinct_wearings'].add(wearing.worn.pk)
             this_year = (
@@ -46,6 +47,14 @@ class WearerYear(StaticPage):
                 )
             if this_year:
                 context['new_wearings'].add(wearing.worn.pk)
+            last_year = (
+                    wearing.worn.last_worn.day >= date(self.year, 1, 1)
+                    and
+                    wearing.worn.last_worn.day <= date(self.year, 12, 31)
+                )
+            if last_year:
+                context['last_wearings'].add(wearing.worn.pk)
+            context['this_year'] = date.today().year
         return context
 
 

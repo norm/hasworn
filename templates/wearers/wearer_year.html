@@ -6,11 +6,15 @@
 
 {% block content %}
 <h1>
-  {% with new_count=new_wearings|length distinct=distinct_wearings|length %}
+  {% with first_count=new_wearings|length %}
+  {% with last_count=last_wearings|length %}
+  {% with distinct=distinct_wearings|length %}
     In {{year}} {{wearer.get_name}} wore
-    {{distinct}} different tshirts {{wearings.count}}
-    times{% if new_count %}; {{new_count}} were first worn this year{% endif %}.
-  {% endwith %}
+    {{distinct}} different tshirts a total of {{wearings.count}}
+    times{% if first_count %}; {{first_count}} were first worn this
+    year{% endif %}{% if last_count and year != this_year %}; 
+    {{last_count}} have not been worn since{% endif %}.
+  {% endwith %}{% endwith %}{% endwith %}
 </h1>
 
 <ol class='year'>
