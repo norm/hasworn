@@ -1,5 +1,6 @@
 {% extends "base_template.html" %}
 
+{% block head_title %}Log out of hasworn.com{% endblock %}
 {% block content %}
   {% if user.is_authenticated %}
     <form method='post' action='{% url "logout" %}'>

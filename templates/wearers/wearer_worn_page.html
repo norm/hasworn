@@ -1,6 +1,7 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
+{% block head_title %}When {{wearer.get_name}} has worn {{object.clothing.name}}{% endblock %}
 {% block body-class %}clothing {{object.clothing.type}}{% endblock %}
 
 {% block content %}

@@ -1,6 +1,7 @@
 {% extends "wearers/base.html" %}
 {% load thumbnail %}
 
+{% block head_title %}What {{wearer.get_name}} has worn{% endblock %}
 {% block content %}
 <h2>most recently worn</h2>
 <ol class='clothing large'>
