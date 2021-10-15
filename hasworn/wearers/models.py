@@ -86,22 +86,34 @@ class Wearer(AbstractUser):
         return Wearing.objects.filter(worn__wearer=self)
 
     def most_worn(self):
-        # FIXME also order by date first worn
+        from hasworn.clothing.models import Wearing
+
+        last_day = Wearing.objects.filter(
+                worn = models.OuterRef('pk')
+            ).order_by('-day')
+
         return self.worn_set.annotate(
-                num_worn = models.Count('days_worn')
-            ).order_by('-num_worn')
+                num_worn = models.Count('days_worn'),
+                last_day = models.Subquery(last_day.values('day')[:1]),
+            ).order_by('-num_worn', 'last_day', 'pk')
 
     def most_worn_recently(self, cut_off=None):
+        from hasworn.clothing.models import Wearing
+
+        last_day = Wearing.objects.filter(
+                worn = models.OuterRef('pk')
+            ).order_by('-day')
         if not cut_off:
             cut_off = date.today() - timedelta(days=180)
-        # FIXME also order by date first worn
+
         return self.worn_set.filter(
                 days_worn__day__gte = cut_off
             ).annotate(
-                num_worn=models.Count('days_worn')
+                num_worn = models.Count('days_worn'),
+                last_day = models.Subquery(last_day.values('day')[:1]),
             ).filter(
                 num_worn__gt = 1
-            ).order_by('-num_worn')
+            ).order_by('-num_worn', 'last_day', 'pk')
 
     def most_worn_average(self):
         return sorted(
