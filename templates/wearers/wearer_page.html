@@ -49,7 +49,16 @@
       {% endthumbnail %}
       <b>{{worn.clothing}}</b>
     </a>
-    <i>worn <em>{{worn.num_worn}}</em> times</i>
+    <i>
+      worn
+      {% if worn.num_worn == 1 %}
+        <em>once</em>
+      {% elif worn.num_worn == 2 %}
+        <em>twice</em>
+      {% else %}
+        <em>{{worn.num_worn}}</em> times
+      {% endif %}
+    </i>
   </li>
 {% endfor %}
 </ol>
@@ -66,7 +75,16 @@
       {% endthumbnail %}
       <b>{{worn.clothing}}</b>
     </a>
-    <i>worn <em>{{worn.num_worn}}</em> times</i>
+    <i>
+      worn
+      {% if worn.num_worn == 1 %}
+        <em>once</em>
+      {% elif worn.num_worn == 2 %}
+        <em>twice</em>
+      {% else %}
+        <em>{{worn.num_worn}}</em> times
+      {% endif %}
+    </i>
   </li>
 {% endfor %}
 </ol>
