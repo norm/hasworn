@@ -15,3 +15,6 @@ letsencrypt/
 
 # generated files
 baked/
+
+# most worn animation artefacts
+most_worn/animation.mp4

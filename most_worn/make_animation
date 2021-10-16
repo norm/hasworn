@@ -1,0 +1,12 @@
+#!/usr/bin/env -S bash -euo pipefail
+
+ffmpeg \
+    -y \
+    -framerate 10 \
+    -f image2 \
+    -pattern_type glob \
+    -i most_worn/frames/\*.png \
+    -vf scale='1920:1080' \
+        most_worn/animation.mp4
+
+iina most_worn/animation.mp4

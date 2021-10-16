@@ -1,0 +1,47 @@
+{% extends "wearers/base.html" %}
+{% load thumbnail %}
+
+{% block header_user_nav %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block body-class %}most-worn{% endblock %}
+
+{% block content %}
+<h2>most worn of all all time</h2>
+<h3>
+  <em>
+    {{wearings.0.day|date:"Y-m-d"}}
+  </em><span>{{wearings.0.clothing.name}}</span>
+  <strong>wearings counted: {{wearings.count}}</strong>
+</h3>
+<ol class='clothing all'>
+{% for worn in most_worn|slice:':98' %}
+  <li class='
+    {%   if worn.last_day == wearings.0.day %} back0
+    {% elif worn.last_day == wearings.1.day %} back1
+    {% elif worn.last_day == wearings.2.day %} back2
+    {% elif worn.last_day == wearings.3.day %} back3
+    {% elif worn.last_day == wearings.4.day %} back4
+    {% elif worn.last_day == wearings.5.day %} back5
+    {% endif %}
+  '>
+    <a href='{{worn.clothing.static_site_url}}'>
+      {% thumbnail worn.clothing.image "200x200" crop="center" as thumb %}
+        <img src='{{thumb.url}}' width=100 height=100 alt=''>
+      {% empty %}
+        <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+      {% endthumbnail %}
+      <b>{{worn.clothing}}</b>
+    </a>
+    <i>
+      {% if worn.num_worn == 1 %}
+        <em>once</em>
+      {% elif worn.num_worn == 2 %}
+        <em>twice</em>
+      {% else %}
+        <em>{{worn.num_worn}}</em> times
+      {% endif %}
+    </i>
+  </li>
+{% endfor %}
+</ol>
+{% endblock %}

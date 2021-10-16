@@ -1,0 +1,42 @@
+#!/usr/bin/env -S bash -euo pipefail
+
+retake=0
+skip_header=1
+
+while getopts "nr" option; do
+    case $option in
+        n)  skip_header=0 ;;
+        r)  retake=1 ;;
+    esac
+done
+shift $(( OPTIND -1 ))
+
+input="${1:-sample/norm.csv}"
+
+declare -a lines
+while IFS= read -r line; do
+    lines+=("$line")
+done < <( cat "$input" )
+
+count=0
+prev_date=0
+
+for line in "${lines[@]}"; do
+    let count="$count + 1"
+    [ $count = 1 -a $skip_header = 1 ] && continue
+
+    date=$(echo "$line" | cut -d, -f1)
+    [ $prev_date = $date ] && continue
+
+    [ $retake = 0 -a -f most_worn/frames/$date.png ] && continue
+
+    echo -n "$date "
+    ./compose exec app python manage.py generate_most_worn norm $date
+    webkit2png \
+        --width 1920 \
+        --height 1080 \
+        http://norm.hasworn.test:8080/most_worn \
+            -o most_worn/frames/$date
+
+    prev_date=$date
+done

@@ -516,3 +516,82 @@ body.apex {
         padding: 0 2em;
     }
 }
+
+body.most-worn {
+    width: 1660px;
+
+    header {
+        margin-bottom: 0;
+
+        h1 {
+            margin-top: 50px;
+            float: left;
+
+            a {
+                color: black;
+                text-decoration: none;
+                padding: 0;
+            }
+        }
+    }
+
+    h2 {
+        margin-top: 50px;
+        font-size: 2.5em;
+        float: left;
+
+        &:before {
+            content: '—';
+            padding: 0 10px;
+        }
+    }
+
+    h3 {
+        clear: both;
+        color: #666;
+        font-family: "Assistant", "News Cycle", "Lato", "PT Sans", sans-serif;
+        font-size: 1.8em;
+        padding: 10px 0;
+        margin: 0;
+
+        em {
+            display: inline-block;
+            font-style: normal;
+            width: 220px;
+            margin-right: 18px;
+            overflow-x: hidden;
+        }
+
+        span {
+            display: inline-block;
+            width: 940px;
+            margin-right: 18px;
+            white-space: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+        }
+
+        strong {
+            display: inline-block;
+            overflow-x: hidden;
+        }
+    }
+
+    ol.clothing {
+        gap: 20px;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+
+        > li,
+        > li form,
+        > li img {
+            width: 100px;
+        }
+    }
+
+    ol.clothing li.back0 { outline: 9px solid #9f3052; }
+    ol.clothing li.back1 { outline: 8px solid #9f3052; }
+    ol.clothing li.back2 { outline: 6px solid #9f3052; }
+    ol.clothing li.back3 { outline: 4px solid #9f3052; }
+    ol.clothing li.back4 { outline: 3px solid #9f3052; }
+    ol.clothing li.back5 { outline: 2px solid #9f3052; }
+}

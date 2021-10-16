@@ -9,6 +9,19 @@ class WearerPage(StaticPage):
     template = 'wearers/wearer_page.html'
 
 
+class WearerMostWornFragment(StaticPage):
+    template = 'wearers/most_worn.html'
+
+    def get_filename(self):
+        return '%s/most_worn.html' % self.wearer.username
+
+    def get_context(self, **kwargs):
+        context = super().get_context(**kwargs)
+        context['most_worn'] = self.wearer.most_worn_at(self.date)
+        context['wearings'] = self.wearer.wearings.filter(day__lte=self.date)
+        return context
+
+
 class WearerWornPage(ModelPage):
     template = 'wearers/wearer_worn_page.html'
 

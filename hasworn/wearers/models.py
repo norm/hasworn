@@ -115,6 +115,21 @@ class Wearer(AbstractUser):
                 num_worn__gt = 1
             ).order_by('-num_worn', 'last_day', 'pk')
 
+    def most_worn_at(self, date):
+        from hasworn.clothing.models import Wearing
+
+        last_day = Wearing.objects.filter(
+                day__lte = date,
+                worn = models.OuterRef('pk'),
+            ).order_by('-day')
+
+        return self.worn_set.filter(
+                days_worn__day__lte = date
+            ).annotate(
+                num_worn = models.Count('days_worn'),
+                last_day = models.Subquery(last_day.values('day')[:1]),
+            ).order_by('-num_worn', 'last_day', 'pk')
+
     def most_worn_average(self):
         return sorted(
                 self.worn_set.all(),
