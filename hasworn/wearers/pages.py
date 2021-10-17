@@ -47,7 +47,7 @@ class WearerYear(StaticPage):
             ).filter(
                 day__gte=date(self.year, 1, 1),
                 day__lte=date(self.year, 12, 31)
-            ).order_by('day')
+            ).order_by('day', 'worn__clothing__name')
         context['distinct_wearings'] = set()
         context['new_wearings'] = set()
         context['last_wearings'] = set()
@@ -137,7 +137,7 @@ class WearerCSV(StaticPage):
 
             wearings = self.wearer.wearings.select_related(
                     'worn__clothing'
-                ).order_by('day')
+                ).order_by('day', 'worn__clothing__name')
             for wearing in wearings:
                 row = {
                     'day': wearing.day,

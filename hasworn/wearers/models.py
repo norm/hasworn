@@ -83,7 +83,9 @@ class Wearer(AbstractUser):
     def wearings(self):
         from hasworn.clothing.models import Wearing
 
-        return Wearing.objects.filter(worn__wearer=self)
+        return Wearing.objects.filter(
+                worn__wearer=self
+            ).order_by('-day', 'worn__clothing__name')
 
     def most_worn(self):
         from hasworn.clothing.models import Wearing
