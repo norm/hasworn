@@ -23,6 +23,13 @@
     {% endif %}
   </li>
   <li>
+    {% if sort_by == 'frequent' %}
+      <em>sorted by most frequently worn</em>
+    {% else %}
+      <a href='/{{wearings.0.clothing.type}}s/most_frequent'>sorted by most frequently worn</a>
+    {% endif %}
+  </li>
+  <li>
     {% if sort_by == 'first' %}
       <em>sorted by first worn</em>
     {% else %}
@@ -46,6 +53,14 @@
         worn <em>{{worn.times_worn}}</em>,
         {% if sort_by == 'first' %}
           first on<br> <em>{{worn.days_worn.last.day|date:"jS F, Y"}}</em>
+        {% elif sort_by == 'frequent' %}
+          {% if worn.days_worn.count > 2 %}
+            <br>on average
+            every <em>{{worn.average_days_between_wearings}}</em> days
+          {% else %}
+            last on<br>
+            <em>{{worn.days_worn.first.day|date:"jS F, Y"}}</em>
+          {% endif %}
         {% else %}
           most recently <em>{{worn.last_worn_days_ago}}</em>
         {% endif %}

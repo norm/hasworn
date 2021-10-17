@@ -102,6 +102,19 @@ class WearerMostRecentlyWorn(StaticPage):
         return context
 
 
+class WearerMostFrequentlyWorn(StaticPage):
+    template = 'wearers/wearer_type_index.html'
+
+    def get_filename(self):
+        return "%s/%s/most_frequent.html" % (self.wearer.username, 'tshirts')
+
+    def get_context(self, **kwargs):
+        context = super().get_context(**kwargs)
+        context['sort_by'] = 'frequent'
+        context['wearings'] = self.wearer.most_worn_average
+        return context
+
+
 class WearerFirstWorn(StaticPage):
     template = 'wearers/wearer_type_index.html'
 

@@ -10,6 +10,7 @@ from .pages import (
     WearerYear,
     WearerTypeIndex,
     WearerMostRecentlyWorn,
+    WearerMostFrequentlyWorn,
     WearerFirstWorn,
     WearerCSV,
     WearerAtom,
@@ -135,7 +136,11 @@ class Wearer(AbstractUser):
     def most_worn_average(self):
         return sorted(
                 self.worn_set.all(),
-                key=lambda worn: worn.average_days_between_wearings,
+                key=lambda worn: 
+                    '%05d-%05d' % (
+                        worn.average_days_between_wearings,
+                        worn.last_worn_days,
+                    )
             )
 
     def years_active(self):
@@ -175,6 +180,7 @@ class Wearer(AbstractUser):
             WearerYear(wearer=self, year=year).create()
         WearerTypeIndex(wearer=self).create()
         WearerMostRecentlyWorn(wearer=self).create()
+        WearerMostFrequentlyWorn(wearer=self).create()
         WearerFirstWorn(wearer=self).create()
         WearerCSV(wearer=self).create()
         WearerAtom(wearer=self).create()
