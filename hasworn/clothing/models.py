@@ -172,7 +172,7 @@ class Worn(models.Model):
 
     @property
     def average_days_between_wearings(self):
-        if self.days_worn.count() < 2:
+        if self.days_worn.count() < 5:
             # use the days since the first anything worn, -1
             return (
                     (date.today() - self.wearer.wearings.last().day).days

@@ -7,7 +7,7 @@
 {% block content %}
   <h1>
     {{wearer.get_name}} has worn <q>{{object.clothing}}</q>
-    {{object.times_worn}}{% if object.days_worn.count > 3 %},
+    {{object.times_worn}}{% if object.days_worn.count > 4 %},
     on average every {{object.average_days_between_wearings}} days{% endif %}.
   </h1>
   {% thumbnail object.clothing.image "1024x1024" crop="center" as thumb %}

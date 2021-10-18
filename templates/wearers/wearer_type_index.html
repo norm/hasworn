@@ -54,7 +54,7 @@
         {% if sort_by == 'first' %}
           first on<br> <em>{{worn.days_worn.last.day|date:"jS F, Y"}}</em>
         {% elif sort_by == 'frequent' %}
-          {% if worn.days_worn.count > 2 %}
+          {% if worn.days_worn.count > 4 %}
             <br>on average
             every <em>{{worn.average_days_between_wearings}}</em> days
           {% else %}
