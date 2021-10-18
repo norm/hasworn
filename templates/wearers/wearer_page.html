@@ -88,4 +88,25 @@
   </li>
 {% endfor %}
 </ol>
+
+<h2>
+  newest additions
+</h2>
+<ol class='clothing most'>
+{% for worn in wearer.wearings_by_first_worn|slice:':16' %}
+  <li>
+    <a href='{{worn.clothing.static_site_url}}'>
+      {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
+        <img src='{{thumb.url}}' width=100 height=100 alt=''>
+      {% empty %}
+        <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+      {% endthumbnail %}
+      <b>{{worn.clothing}}</b>
+    </a>
+    <i>
+      <em>{{worn.days_worn.last.day}}</em>
+    </i>
+  </li>
+{% endfor %}
+</ol>
 {% endblock %}

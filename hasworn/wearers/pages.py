@@ -125,11 +125,7 @@ class WearerFirstWorn(StaticPage):
         context = super().get_context(**kwargs)
         worn_set = self.wearer.worn_set.all()
         context['sort_by'] = 'first'
-        context['wearings'] = sorted(
-                worn_set,
-                key=lambda worn: worn.days_worn.last().day,
-                reverse=True,
-            )
+        context['wearings'] = self.wearer.wearings_by_first_worn
         return context
 
 

@@ -88,6 +88,18 @@ class Wearer(AbstractUser):
                 worn__wearer=self
             ).order_by('-day', 'worn__clothing__name')
 
+    @property
+    def wearings_by_first_worn(self):
+        from hasworn.clothing.models import Wearing
+
+        first_day = Wearing.objects.filter(
+                worn = models.OuterRef('pk'),
+            ).order_by('day')
+
+        return self.worn_set.annotate(
+                first_day = models.Subquery(first_day.values('day')[:1]),
+            ).order_by('-first_day', 'clothing__name')
+
     def most_worn(self):
         from hasworn.clothing.models import Wearing
 
