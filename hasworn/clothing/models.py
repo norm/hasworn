@@ -241,6 +241,14 @@ class Wearing(models.Model):
 
     @property
     def tweet_text(self):
+        return '%s #daily #tshirt %s — %s' % (
+                self.clothing.name,
+                self.worn.absolute_static_site_url,
+                self.summary_text,
+            )
+
+    @property
+    def summary_text(self):
         total_worn = self.worn.days_worn.count()
         if total_worn == 1:
             return self.first_wearing_text
@@ -255,19 +263,12 @@ class Wearing(models.Model):
 
     @property
     def first_wearing_text(self):
-        return (
-            '%s #daily #tshirt %s —'
-            ' this is the first time I\'ve worn this tshirt.' % (
-                self.clothing.name,
-                self.worn.absolute_static_site_url,
-            )
-        )
+        return 'This is the first time I\'ve worn this tshirt.'
 
     @property
     def low_wearing_count_text(self):
-        last = self.worn.days_worn.all()[1]
-        delta = relativedelta(self.day, last.day)
-        print(delta, delta.years, delta.months, delta.days)
+        previous_wearing = self.worn.days_worn.all()[1]
+        delta = relativedelta(self.day, previous_wearing.day)
         if delta.years > 0:
             if delta.months > 9:
                 gap = 'nearly %s years ago' % apnumber(delta.years + 1)
@@ -288,11 +289,8 @@ class Wearing(models.Model):
         else:
             gap = '%d days ago' % delta.days
         return (
-            '%s #daily #tshirt %s —'
-            ' this is the %s time I\'ve worn this tshirt,'
+            'This is the %s time I\'ve worn this tshirt,'
             ' the last time was %s.' % (
-                self.clothing.name,
-                self.worn.absolute_static_site_url,
                 ordinal(self.worn.days_worn.count()),
                 gap,
             )
@@ -300,8 +298,8 @@ class Wearing(models.Model):
 
     @property
     def long_gap_wearing_text(self):
-        last = self.worn.days_worn.all()[1]
-        delta = relativedelta(self.day, last.day)
+        previous_wearing = self.worn.days_worn.all()[1]
+        delta = relativedelta(self.day, previous_wearing.day)
         if delta.months > 9:
             gap = 'nearly %s years' % ordinal(delta.years + 1)
         elif delta.years == 1:
@@ -309,13 +307,10 @@ class Wearing(models.Model):
         else:
             gap = 'over %d years' % delta.years
         return (
-            '%s #daily #tshirt %s —'
-            ' this is the %s time I\'ve worn this since %s,'
+            'This is the %s time I\'ve worn this since %s,'
             ' and the first time in %s.' % (
-                self.clothing.name,
-                self.worn.absolute_static_site_url,
                 ordinal(self.worn.days_worn.count()),
-                first_worn.day.strftime('%B %Y'),
+                self.worn.first_worn.day.strftime('%B %Y'),
                 gap,
             )
         )
@@ -323,17 +318,13 @@ class Wearing(models.Model):
     @property
     def wearing_text(self):
         year_ago = date.today() - timedelta(days=365)
-        first_worn = self.worn.days_worn.last()
         return (
-            '%s #daily #tshirt %s —'
-            ' this is the %s time I\'ve worn this since %s,'
+            'This is the %s time I\'ve worn this since %s,'
             ' and the %s time in the past twelve months.'
             ' It is my %s most frequently worn tshirt. '
             ' I wear it on average every %.f days.' % (
-                self.clothing.name,
-                self.worn.absolute_static_site_url,
                 ordinal(self.worn.days_worn.count()),
-                first_worn.day.strftime('%B %Y'),
+                self.worn.first_worn.day.strftime('%B %Y'),
                 ordinal(self.worn.days_worn.filter(day__gte=year_ago).count()),
                 ordinal(self.worn.position_in_most_worn_average),
                 self.worn.average_days_between_wearings,

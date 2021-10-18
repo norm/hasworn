@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.template.loader import render_to_string
 from django.utils import feedgenerator
+from hasworn.utils import ordinal
 import icalendar
 
 
@@ -129,22 +130,21 @@ class FeedPage(StaticPage):
     def render_page(self):
         context = self.get_context()
         for item in context['feed_items']:
-            description = '<p>%s wore %s on %s.' % (
-                    self.wearer.get_name(),
-                    item.clothing,
-                    item.day,
-                )
+            description = '<h1>%s</h1>' % item.clothing.name
             if item.clothing.image:
-                description += '<img src="%s" alt="">' % item.clothing.image.url
-            description += '</p>'
+                description += '<p><a href="%s"><img src="%s" alt=""></a></p>' % (
+                        item.worn.absolute_static_site_url,
+                        item.clothing.image.url,
+                    )
+            description += '<p>%s</p>' % item.summary_text
             self.feed.add_item(
-                    title = item.clothing.name,
+                    title = '%s (%s time)' % (
+                            item.clothing.name,
+                            ordinal(item.worn.days_worn.count()),
+                        ),
                     author_link = 'https://%s.hasworn.com' % self.wearer.username,
                     author_name = self.wearer.get_name(),
-                    link = 'https://%s.hasworn.com%s' % (
-                            self.wearer.username,
-                            item.clothing.static_site_url
-                        ),
+                    link = item.worn.absolute_static_site_url,
                     pubdate = item.day,
                     updateddate = item.day,
                     description = description,
