@@ -3,9 +3,12 @@
 
 {% block head_title %}What {{wearer.get_name}} has worn{% endblock %}
 {% block content %}
-<h2>most recently worn</h2>
+<h2>
+  most recently worn
+  <span>(<a href='/tshirts/most_recent'>all</a>)</span>
+</h2>
 <ol class='clothing large'>
-  {% for wearing in wearer.wearings.all|slice:':12' %}
+  {% for wearing in wearer.wearings|slice:':12' %}
   <li>
     <a href='{{wearing.clothing.static_site_url}}'>
       {% thumbnail wearing.clothing.image "190x190" crop="center" as thumb %}
@@ -20,7 +23,10 @@
   {% endfor %}
 </ol>
 
-<h2>most frequently worn, on average</h2>
+<h2>
+  most frequently worn, on average
+  <span>(<a href='/tshirts/most_frequent'>all</a>)</span>
+</h2>
 <ol class='clothing most'>
 {% for worn in wearer.most_worn_average|slice:':16' %}
   <li>
@@ -63,7 +69,10 @@
 {% endfor %}
 </ol>
 
-<h2>most worn of all time</h2>
+<h2>
+  most worn of all time
+  <span>(<a href='/tshirts/'>all</a>)</span>
+</h2>
 <ol class='clothing most'>
 {% for worn in wearer.most_worn|slice:':16' %}
   <li>
@@ -91,6 +100,7 @@
 
 <h2>
   newest additions
+  <span>(<a href='/tshirts/first_worn'>all</a>)</span>
 </h2>
 <ol class='clothing most'>
 {% for worn in wearer.wearings_by_first_worn|slice:':16' %}
