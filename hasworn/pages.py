@@ -184,7 +184,10 @@ class CalendarPage(StaticPage):
         for item in context['feed_items']:
             event = icalendar.Event()
             event.add('uid', '%s-%s' % (item.day, item.clothing.slug))
-            event.add('summary', item.clothing.name)
+            event.add('summary', '%s (%s time)' % (
+                    item.clothing.name,
+                    ordinal(item.worn.days_worn.count()),
+                ))
             event.add('dtstart', item.day)
             event.add('dtstamp', datetime.combine(item.day, time()))
             self.calendar.add_component(event)
