@@ -145,7 +145,7 @@ class Wearer(AbstractUser):
                 last_day = models.Subquery(last_day.values('day')[:1]),
             ).order_by('-num_worn', 'last_day', 'pk')
 
-    def most_worn_average(self):
+    def most_worn_by_days_between(self):
         return sorted(
                 self.worn_set.all(),
                 key=lambda worn: 

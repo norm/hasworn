@@ -28,7 +28,7 @@
   <span>(<a href='/tshirts/most_frequent'>all</a>)</span>
 </h2>
 <ol class='clothing most'>
-{% for worn in wearer.most_worn_average|slice:':16' %}
+{% for worn in wearer.most_worn_by_days_between|slice:':16' %}
   <li>
     <a href='{{worn.clothing.static_site_url}}'>
       {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}

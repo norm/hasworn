@@ -111,7 +111,7 @@ class WearerMostFrequentlyWorn(StaticPage):
     def get_context(self, **kwargs):
         context = super().get_context(**kwargs)
         context['sort_by'] = 'frequent'
-        context['wearings'] = self.wearer.most_worn_average
+        context['wearings'] = self.wearer.most_worn_by_days_between
         return context
 
 

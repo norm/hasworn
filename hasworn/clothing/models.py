@@ -163,8 +163,8 @@ class Worn(models.Model):
         return (date.today() - self.last_worn.day).days
 
     @property
-    def position_in_most_worn_average(self):
-        avg = self.wearer.most_worn_average()
+    def position_in_most_worn_by_days_between(self):
+        avg = self.wearer.most_worn_by_days_between()
         for count, worn in enumerate(avg):
             if worn.pk == self.pk:
                 return count+1
@@ -326,7 +326,7 @@ class Wearing(models.Model):
                 ordinal(self.worn.days_worn.count()),
                 self.worn.first_worn.day.strftime('%B %Y'),
                 ordinal(self.worn.days_worn.filter(day__gte=year_ago).count()),
-                ordinal(self.worn.position_in_most_worn_average),
+                ordinal(self.worn.position_in_most_worn_by_days_between),
                 self.worn.average_days_between_wearings,
             )
         )
