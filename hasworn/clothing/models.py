@@ -284,10 +284,11 @@ class Wearing(models.Model):
                     gap = 'over %d years ago' % delta.years
         elif delta.months > 2:
             gap = 'over %d months ago' % delta.months
-        elif delta.days == 1:
+        elif delta.months == 0 and delta.days == 1:
             gap = 'yesterday'
         else:
-            gap = '%d days ago' % delta.days
+            days = self.day - previous_wearing.day
+            gap = '%d days ago' % days.days
         return (
             'This is the %s time I\'ve worn this tshirt,'
             ' the last time was %s.' % (
