@@ -179,11 +179,13 @@ class Worn(models.Model):
                     + 1
                 )
         else:
-            sum = int(self.days_worn.aggregate(
-                        models.Sum('days_since_last')
-                    )['days_since_last__sum'])
-            total_days = sum + self.last_worn_days
-            return int(total_days / self.days_worn.count())
+            return int(
+                self.days_worn.filter(
+                    days_since_last__gt = 0
+                ).aggregate(
+                    models.Avg('days_since_last')
+                )['days_since_last__avg']
+            )
 
     def __str__(self):
         return u'%s (worn by %s)' % (
