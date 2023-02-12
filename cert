@@ -1,19 +1,18 @@
 #!/usr/bin/env -S bash -euo pipefail
 
-extra_args='--renew-hook=./reload_nginx.sh'
-action='renew'
-
-if [ ! -f letsencrypt/certificates/hasworn.com.key ]; then
-    extra_args=
-    action='run'
+action='run'
+stamp=0
+if [ -f letsencrypt/certificates/hasworn.com.key ]; then
+    action='renew'
+    stamp=$(stat -c%Y letsencrypt/certificates/hasworn.com.key)
 fi
 
 docker run \
     -it \
     --rm \
-    --env-file environ.production \
     -u $(id -u):$(id -g) \
     -v '/home/hasworn/letsencrypt:/etc/lego_certificates' \
+    --env-file environ.production \
     goacme/lego \
         --email norm@hasworn.mnfrancis.com \
         --accept-tos \
@@ -21,4 +20,10 @@ docker run \
         --path /etc/lego_certificates \
             --domains hasworn.com \
             --domains \*.hasworn.com \
-                    $action $extra_args
+                    $action \
+                            \
+    | tee /tmp/cert.run.$(date +'%Y%m%d%H%M%S') \
+    | egrep -v 'Trying renewal|Obtaining bundled|AuthURL|already valid|solver|to solve|Wait for|Checking|validated|Cleaning|no renewal'
+
+[ $(stat -c%Y letsencrypt/certificates/hasworn.com.key) != $stamp ] \
+    && ./compose exec -T nginx /usr/sbin/nginx -s reload
