@@ -1,6 +1,7 @@
 from datetime import date
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, DeleteView
+from django.urls import reverse
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from .models import Clothing, Wearing, Worn
 
@@ -49,3 +50,29 @@ class CreateClothing(CreateView):
 
     def get_success_url(self):
         return '/'
+
+
+class UpdateClothing(UpdateView):
+    model = Clothing
+    fields = ('name', 'description', 'image')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        worn = context['object'].user_worn(self.request.user)
+        worn_url = reverse('update-worn', kwargs={'pk': worn.pk})
+        context.update({
+            'worn_url': worn_url,
+            'no_longer': worn.no_longer,
+        })
+        return context
+
+    def get_success_url(self):
+        return '/'
+
+
+class UpdateWorn(UpdateView):
+    model = Worn
+    fields = ('no_longer',)
+
+    def get_success_url(self):
+        return '/all/'

@@ -1,0 +1,30 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+
+<h1>{{form.name.value}}</h1>
+{% if object.clothing.image %}
+  <p class='image'><img src='{{object.clothing.image.url}}'></p>
+{% endif %}
+
+{% if form.non_field_errors %}
+<ul>
+{% for error in form.non_field_errors %}
+  <li>{{error}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<form method='post'>
+  {% csrf_token %}
+  <fieldset>
+    <legend>No longer wearing</legend>
+    <label>
+      Why
+      <input type='text' name='no_longer' maxlength='254' id='id_no_longer' value='{{object.no_longer}}'>
+    </label>
+    <input type='submit' value='Stop wearing'>
+  </fieldset>
+</form>
+
+{% endblock %}

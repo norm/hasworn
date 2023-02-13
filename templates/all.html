@@ -1,35 +1,27 @@
 {% extends "base_template.html" %}
 {% load thumbnail %}
 
-{% block head_title %}Wear again — i.hasworn.com{% endblock %}
+{% block head_title %}All clothing — i.hasworn.com{% endblock %}
 {% block content %}
 
-<h1>Wear again today ({% now 'Y-m-d' %})</h1>
+<h1>All clothing</h1>
 <ol class='clothing most'>
 {% for worn in wearings %}
   <li>
-    {% comment %}
-      <button type='submit'>
-        {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
-          <img src='{{thumb.url}}' width=100 height=100 alt=''>
-        {% empty %}
-          <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
-        {% endthumbnail %}
-        {{worn}}
-      </button>
-    </form>
-    {% endcomment %}
-    <form method='post' action='{% url "create-wearing" %}' class='wear'>
+    <div>
+      {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
+        <img src='{{thumb.url}}' width=100 height=100 alt=''>
+      {% empty %}
+        <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+      {% endthumbnail %}
+    </div>
+    <form method='post' action='{% url "create-wearing" %}' class='inline'>
       {% csrf_token %}
       <input type='hidden' name='day' value='{% now "Y-m-d" %}'>
       <input type='hidden' name='worn' value='{{worn.pk}}'>
+      <a href='{% url "update-clothing" worn.clothing.pk %}'>Edit {{worn.clothing.name}}</a>
       <button type='submit'>
-        {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
-          <img src='{{thumb.url}}' width=100 height=100 alt=''>
-        {% empty %}
-          <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
-        {% endthumbnail %}
-        <b>Wear </b><i>{{worn.clothing.name}}</i>
+        Wear {{worn.clothing.name}}
       </button>
     </form>
   </li>

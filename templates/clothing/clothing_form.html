@@ -1,8 +1,17 @@
 {% extends "base_template.html" %}
+{% load thumbnail %}
 
+{% block head_title %}Edit {{object.name}} — i.hasworn.com{% endblock %}
 {% block content %}
 
-<h1>{{form.name.value}}</h1>
+<h1>{{form.name.value|default_if_none:"Add clothing…"}}</h1>
+<p class='image'>
+{% thumbnail object.image "190x190" crop="center" as thumb %}
+  <img src='{{thumb.url}}' width=190 height=190 alt=''>
+{% empty %}
+  <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=190 height=190 alt=''>
+{% endthumbnail %}
+</p>
 
 {% if form.non_field_errors %}
 <ul>
@@ -37,4 +46,17 @@
   </label>
   <input type='submit' value='Create'>
 </form>
+
+<form method='post' action='{{worn_url}}'>
+  {% csrf_token %}
+  <fieldset>
+    <legend>No longer wearing</legend>
+    <label>
+      Why
+      <input type='text' name='no_longer' maxlength='254' id='id_no_longer' value='{{no_longer|default_if_none:""}}'>
+    </label>
+    <input type='submit' value='Stop wearing'>
+  </fieldset>
+</form>
+
 {% endblock %}

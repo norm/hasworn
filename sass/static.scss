@@ -95,6 +95,33 @@ footer {
     margin: 3em 0;
 }
 
+#body form {
+    label {
+        input {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+    }
+
+    input[type=submit],
+    button[type=submit] {
+        display: block;
+        margin-top: 0.5em;
+        font-size: 2em;
+        font-weight: bold;
+    }
+}
+
+#body form.inline {
+    input[type=submit],
+    button[type=submit] {
+        display: block;
+        margin-top: 0;
+        font-size: 1em;
+        font-weight: normal;
+    }
+}
+
 #body h1 {
     font-size: 1.5em;
     margin: 0 0 0.25em;
@@ -199,6 +226,10 @@ ol.clothing {
     > li {
         position: relative;
 
+        div {
+            position: relative;
+        }
+
         i {
             position: absolute;
             background-color: rgba(0, 0, 0, 0.666);
@@ -224,6 +255,21 @@ ol.clothing {
             font-size: 14px;
             max-width: 80px;
             font-weight: 800;
+        }
+
+        form {
+            font-size: 14px;
+
+            a {
+                display: block;
+                padding-bottom: 5px;
+            }
+
+            button {
+                border: 1px solid black;
+                padding: 3px;
+                background-color: #c9c9c9;
+            }
         }
     }
 

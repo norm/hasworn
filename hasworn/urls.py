@@ -17,7 +17,13 @@ from django.contrib import admin
 from django.urls import path
 
 from hasworn.views import Home, All, Login, Logout
-from hasworn.clothing.views import CreateWearing, DeleteWearing, CreateClothing
+from hasworn.clothing.views import (
+    CreateWearing,
+    DeleteWearing,
+    CreateClothing,
+    UpdateClothing,
+    UpdateWorn,
+)
 
 
 urlpatterns = [
@@ -51,5 +57,15 @@ urlpatterns = [
         'clothing/',
         CreateClothing.as_view(),
         name = 'create-clothing',
+    ),
+    path(
+        'clothing/<pk>',
+        UpdateClothing.as_view(),
+        name = 'update-clothing',
+    ),
+    path(
+        'worn/<pk>',
+        UpdateWorn.as_view(),
+        name = 'update-worn',
     ),
 ]

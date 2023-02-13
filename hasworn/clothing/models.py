@@ -84,6 +84,9 @@ class Clothing(models.Model):
         else:
             return 'http://img.hasworn.com/%s.jpg' % self.slug
 
+    def user_worn(self, user):
+        return Worn.objects.get(clothing=self, wearer=user)
+
     @property
     def type_plural(self):
         return '%ss' % self.type
@@ -112,6 +115,11 @@ class Worn(models.Model):
     clothing = models.ForeignKey(
         Clothing,
         on_delete = models.CASCADE,
+    )
+    no_longer = models.CharField(
+        max_length = 255,
+        blank = True,
+        null = True,
     )
 
     @property

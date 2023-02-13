@@ -10,6 +10,9 @@
     {{object.times_worn}}{% if object.days_worn.count > 4 %},
     on average every {{object.average_days_between_wearings}} days{% endif %}.
   </h1>
+  {% if object.no_longer %}
+    <p>This is no longer worn because <q>{{object.no_longer}}</q>.
+  {% endif %}
   {% thumbnail object.clothing.image "1024x1024" crop="center" as thumb %}
     <p class='image'><img src='{{thumb.url}}' alt='' width=1024 height=1024></p>
   {% empty %}
