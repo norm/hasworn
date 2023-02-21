@@ -180,20 +180,40 @@ class Worn(models.Model):
 
     @property
     def average_days_between_wearings(self):
-        if self.days_worn.count() < 5:
+        count = self.days_worn.count()
+        if count < 5:
             # use the days since the first anything worn, -1
             return (
                     (date.today() - self.wearer.wearings.last().day).days
                     + 1
                 )
         else:
-            return int(
-                self.days_worn.filter(
-                    days_since_last__gt = 0
-                ).aggregate(
+            # scenario 1: a tshirt that is worn only on Christmas Day should
+            # have an average of every 365 days -- it should not drastically
+            # reduce because today is Jan 1st
+            # 
+            # scenario 2: a tshirt previously worn frequently but no longer
+            # should have its average grow over time -- to reflect that it
+            # is no longer a regularly worn tshirt
+            # 
+            # therefore only increase the average wear with the current days
+            # since last wearing once it is *larger* than the average
+            days_worn = self.days_worn.filter(days_since_last__gt = 0)
+            average = int(
+                days_worn.aggregate(
                     models.Avg('days_since_last')
                 )['days_since_last__avg']
             )
+            if self.last_worn_days < average:
+                return average
+            else:
+                total = int(
+                    days_worn.aggregate(
+                        models.Sum('days_since_last')
+                    )['days_since_last__sum']
+                )
+                total += self.last_worn_days
+                return int(total / count)
 
     def __str__(self):
         return u'%s (worn by %s)' % (
