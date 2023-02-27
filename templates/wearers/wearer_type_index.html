@@ -2,7 +2,7 @@
 {% load thumbnail %}
 
 {% block head_title %}Everything {{wearer.get_name}} has worn{% endblock %}
-{% block body-class %}type {{wearings.0.clothing.type}}{% endblock %}
+{% block wearer-body-class %}type {{wearings.0.clothing.type}}{% endblock %}
 
 {% block content %}
 <h1>all {{wearings.0.clothing.type}}s</h1>

@@ -1,5 +1,7 @@
 {% extends "base_template.html" %}
 
+{% block body-class %}static {% block wearer-body-class %}{% endblock %}{% endblock %}
+
 {% block meta_atomfeed %}
   <link rel='alternate' type='application/atom+xml' title='What {{wearer.get_name}} has worn' href='/index.atom'>
 {% endblock %}
