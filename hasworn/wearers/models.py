@@ -161,6 +161,14 @@ class Wearer(AbstractUser):
                     )
             )
 
+    @property
+    def wear_today_suggestions(self):
+        return sorted(
+            self.worn_set.all(),
+            key=lambda worn: worn.wear_today_score,
+            reverse=True,
+        )[0:14]
+
     def years_active(self):
         return [ year.year for year in self.wearings.dates('day', 'year') ]
 

@@ -25,10 +25,6 @@
   {% endfor %}
   </ol>
 {% else %}
-  <p>
-    To wear something today, select from <a href='/all/'>all previously
-    worn</a>, or fill out this form.
-  </p>
   <form method='post' action='{% url "create-wearing" %}'>
     {% csrf_token %}
     <input type='hidden' name='day' value='{% now "Y-m-d" %}'>
@@ -45,6 +41,30 @@
       <input type='submit' value='Submit'>
     </fieldset>
   </form>
+  <p>
+    To wear something today, select one from <a href='/all/'>all worn</a>,
+    choose one of the suggestions below,
+    or fill out the form.
+  </p>
+  <ol class='clothing'>
+    {% for suggestion in request.user.wear_today_suggestions %}
+      <li>
+        <form method='post' action='{% url "create-wearing" %}' class='wear'>
+          {% csrf_token %}
+          <input type='hidden' name='day' value='{% now "Y-m-d" %}'>
+          <input type='hidden' name='worn' value='{{suggestion.pk}}'>
+          <button type='submit'>
+            {% thumbnail suggestion.clothing.image "100x100" crop="center" as thumb %}
+              <img src='{{thumb.url}}' width=100 height=100 alt=''>
+            {% empty %}
+              <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+            {% endthumbnail %}
+            <i><b>Wear</b> {{suggestion.clothing.name}}</i>
+          </button>
+        </form>
+      </li>
+    {% endfor %}
+  </ol>
 {% endif %}
 
 <h2>Add something new</h2>

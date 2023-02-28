@@ -17,6 +17,7 @@
       <form method='post' action='{% url "logout" %}'>
         {% csrf_token %}
         Logged in as <strong>{{request.user}}</strong>
+        • <a href='/all/'>all worn</a>
         • <button type='submit'>logout</button>
         {% if request.user.is_superuser %}
           • <a href='{% url "admin:index" %}'>django admin</a>

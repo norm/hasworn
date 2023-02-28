@@ -215,6 +215,29 @@ class Worn(models.Model):
                 total += self.last_worn_days
                 return int(total / count)
 
+    @property
+    def wear_today_score(self):
+        if self.no_longer:
+            # no longer worn means v low score
+            return -10
+
+        if self.days_worn.count() == 0:
+            # never worn has a (probably winning) high score
+            return 10
+
+        score = 0
+        if self.last_worn_days < self.average_days_between_wearings:
+            # when worn more recently than the average,
+            # not yet time to wear it again
+            score -= 1
+        else:
+            # when not worn for a while, give 1 point per year over the average
+            score += (
+                (self.last_worn_days - self.average_days_between_wearings)
+                / 365
+            )
+        return score
+
     def __str__(self):
         return u'%s (worn by %s)' % (
             self.clothing,
