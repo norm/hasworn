@@ -5,10 +5,37 @@
 {% block content %}
 
 <h1>All clothing</h1>
-<h2>Current</h2>
+
+{% if never_worn %}
+<h2>Not yet worn</h2>
 <ol class='clothing most'>
-{% for worn in wearings %}
-  {% if not worn.no_longer %}
+  {% for worn in never_worn %}
+    <li>
+      <form method='post' action='{% url "create-wearing" %}' class='wear'>
+        {% csrf_token %}
+        <input type='hidden' name='day' value='{% now "Y-m-d" %}'>
+        <input type='hidden' name='worn' value='{{worn.pk}}'>
+        <button type='submit'>
+          {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
+            <img src='{{thumb.url}}' width=100 height=100 alt=''>
+          {% empty %}
+            <img src='//hasworn.m17s.net/placeholder/tshirt.100.jpg' width=100 height=100 alt=''>
+          {% endthumbnail %}
+          <i><b>Wear</b> {{worn.clothing.name}}</i>
+        </button>
+      </form>
+      <div>
+        <a href='{% url "update-clothing" worn.clothing.pk %}'>Edit
+          <b>{{worn.clothing.name}}</b></a>
+      </div>
+    </li>
+  {% endfor %}
+</ol>
+{% endif %}
+
+<h2>Currently wearing</h2>
+<ol class='clothing most'>
+{% for worn in wearing %}
   <li>
     <form method='post' action='{% url "create-wearing" %}' class='wear'>
       {% csrf_token %}
@@ -28,14 +55,12 @@
         <b>{{worn.clothing.name}}</b></a>
     </div>
   </li>
-  {% endif %}
 {% endfor %}
 </ol>
 
 <h2>No longer wearing</h2>
 <ol class='clothing most'>
-{% for worn in wearings %}
-  {% if worn.no_longer %}
+{% for worn in no_longer_wearing %}
   <li>
     <div>
       {% thumbnail worn.clothing.image "100x100" crop="center" as thumb %}
@@ -48,7 +73,6 @@
     <a href='{% url "update-clothing" worn.clothing.pk %}'>Edit 
       <b>{{worn.clothing.name}}</b></a>
   </li>
-  {% endif %}
 {% endfor %}
 </ol>
 

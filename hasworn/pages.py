@@ -76,7 +76,8 @@ class ModelPage(StaticPage):
         try:
             obj = queryset.get()
         except:
-            raise NopeNothing
+            from hasworn.wearers.models import NeverWorn
+            raise NeverWorn
         return obj
 
     def get_model(self):

@@ -92,10 +92,9 @@ class WearerMostRecentlyWorn(StaticPage):
 
     def get_context(self, **kwargs):
         context = super().get_context(**kwargs)
-        worn_set = self.wearer.worn_set.all()
         context['sort_by'] = 'recent'
         context['wearings'] = sorted(
-                worn_set,
+                self.wearer.most_worn(),
                 key=lambda worn: worn.days_worn.first().day,
                 reverse=True,
             )
@@ -123,7 +122,6 @@ class WearerFirstWorn(StaticPage):
 
     def get_context(self, **kwargs):
         context = super().get_context(**kwargs)
-        worn_set = self.wearer.worn_set.all()
         context['sort_by'] = 'first'
         context['wearings'] = self.wearer.wearings_by_first_worn
         return context

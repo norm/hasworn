@@ -36,11 +36,11 @@ class CreateClothing(CreateView):
         self.object = form.save()
         self.object.created_by = self.request.user
         self.object.save()
+        worn = Worn.objects.create(
+            clothing = self.object,
+            wearer = self.request.user,
+        )
         if 'wearing' in self.get_form_kwargs()['data']:
-            worn = Worn.objects.create(
-                clothing = self.object,
-                wearer = self.request.user,
-            )
             wearing = Wearing.objects.create(
                 worn = worn,
                 day = date.today(),

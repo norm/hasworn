@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import views, logout
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.utils.decorators import method_decorator
@@ -28,12 +29,23 @@ class All(WearerContext, TemplateView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        worn_set = self.request.user.worn_set.all()
-        context['wearings'] = sorted(
-                worn_set,
-                key=lambda worn: worn.days_worn.first().day,
-                reverse=True,
-            )
+        worn_set = self.request.user.worn_set.annotate(
+            worn_count=Count('days_worn')
+        )
+
+        context['never_worn'] = worn_set.filter(worn_count=0)
+        context['wearing'] = sorted(
+            worn_set.filter(
+                worn_count__gt=0,
+                no_longer__isnull=True,
+            ),
+            key=lambda worn: worn.last_worn.day,
+            reverse=True,
+        )
+        context['no_longer_wearing'] = worn_set.filter(
+            worn_count__gt=0,
+            no_longer__isnull=False,
+        )
         return context
 
 

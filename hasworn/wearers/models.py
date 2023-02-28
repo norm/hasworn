@@ -21,6 +21,10 @@ from .pages import (
 FIVE_MINUTES = ( 60 * 5 )
 
 
+class NeverWorn(Exception):
+    pass
+
+
 class Wearer(AbstractUser):
     username = models.CharField(
         _('username'),
@@ -110,6 +114,8 @@ class Wearer(AbstractUser):
         return self.worn_set.annotate(
                 num_worn = models.Count('days_worn'),
                 last_day = models.Subquery(last_day.values('day')[:1]),
+            ).filter(
+                num_worn__gt=0,
             ).order_by('-num_worn', 'last_day', 'pk')
 
     def most_worn_recently(self, cut_off=None):
@@ -147,7 +153,7 @@ class Wearer(AbstractUser):
 
     def most_worn_by_days_between(self):
         return sorted(
-                self.worn_set.all(),
+                self.most_worn(),
                 key=lambda worn: 
                     '%05d-%05d' % (
                         worn.average_days_between_wearings,
@@ -187,7 +193,10 @@ class Wearer(AbstractUser):
 
     def generate_wearer_site(self):
         for worn in self.has_worn.all():
-            WearerWornPage(wearer=self, pk=worn.pk).create()
+            try:
+                WearerWornPage(wearer=self, pk=worn.pk).create()
+            except NeverWorn:
+                pass
         for year in self.years_active():
             WearerYear(wearer=self, year=year).create()
         WearerTypeIndex(wearer=self).create()
