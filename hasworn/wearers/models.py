@@ -102,6 +102,9 @@ class Wearer(AbstractUser):
 
         return self.worn_set.annotate(
                 first_day = models.Subquery(first_day.values('day')[:1]),
+                num_worn = models.Count('days_worn'),
+            ).filter(
+                num_worn__gt=0,
             ).order_by('-first_day', 'clothing__name')
 
     def most_worn(self):
