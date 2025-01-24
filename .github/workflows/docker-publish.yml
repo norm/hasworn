@@ -28,6 +28,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          pip install "Cython<3.0" "pyyaml<6" --no-build-isolation
           pip install libsass==0.21.0 awscli==1.20.20
           ./update_css
 
