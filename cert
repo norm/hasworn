@@ -8,7 +8,6 @@ if [ -f letsencrypt/certificates/hasworn.com.key ]; then
 fi
 
 docker run \
-    -it \
     --rm \
     -u $(id -u):$(id -g) \
     -v '/home/hasworn/letsencrypt:/etc/lego_certificates' \
@@ -23,7 +22,9 @@ docker run \
                     $action \
                             \
     | tee /tmp/cert.run.$(date +'%Y%m%d%H%M%S') \
-    | egrep -v 'Trying renewal|Obtaining bundled|AuthURL|already valid|solver|to solve|Wait for|Checking|validated|Cleaning|no renewal'
+    | egrep -v 'Trying renewal|Obtaining bundled|AuthURL|already valid|solver|to solve|Wait for|Checking|validated|Cleaning|no renewal' || true
 
-[ $(stat -c%Y letsencrypt/certificates/hasworn.com.key) != $stamp ] \
-    && ./compose exec -T nginx /usr/sbin/nginx -s reload
+if [ $(stat -c%Y letsencrypt/certificates/hasworn.com.key) != $stamp ]; then
+    echo 'Cert updated, restarting nginx'
+    ./compose exec -T nginx /usr/sbin/nginx -s reload
+fi
